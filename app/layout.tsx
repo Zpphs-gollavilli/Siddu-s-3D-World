@@ -1,10 +1,10 @@
 import { montserrat, poppins } from '@/constant/font'
-import './globals.css'
+import '../styles/globals.css';
 import Navbar from '../components/Navbar'
 
 export const metadata = {
-  title: "Siddu's 3d World",
-  description: 'G Siddharth Portfolio',
+  title: "Siddu's 3D World",
+  description: 'G Siddharth 3D Portfolio',
 }
 
 export default function RootLayout({
