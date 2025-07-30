@@ -68,7 +68,7 @@ export default function SectionTechnologyStack() {
           transition={{ duration: 0.7 }}
           className={`${styles.sectionDescription} max-w-[960px] mx-auto`}
         >
-          I care deeply about web development, performance, and user experience. That's why I use modern and proven technologies in all my projects.
+          {"I care deeply about web development, performance, and user experience. That's why I use modern and proven technologies in all my projects."}
         </motion.p>
       </div>
 
