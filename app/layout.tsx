@@ -1,5 +1,5 @@
 import { montserrat, poppins } from '@/constant/font'
-import '../styles/globals.css';
+import './globals.css'; 
 import Navbar from '../components/Navbar'
 
 export const metadata = {
