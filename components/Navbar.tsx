@@ -80,7 +80,7 @@ export default function Navbar(): JSX.Element {
                         </ul>
                         <a
                             className='px-6 py-2 text-white gradient-btn rounded-xl'
-                            href="/index.html"
+                            href="/index1.html"
                             download="G_Siddharth_Resume.html"
                             target="_blank"
                         >
