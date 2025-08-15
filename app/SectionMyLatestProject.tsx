@@ -20,8 +20,8 @@ const tabs = [
         slug: 'siddu-s-world',
         title: 'Siddharth-portfolio',
         image: '/my_project.png',
-        repositoryUrl: "https://github.com/Zpphs-gollavilli/siddu-s-world",
-        demoUrl: "https://siddu-s-world.com",
+        repositoryUrl: "https://github.com/Zpphs-gollavilli/siddu-s-3D-world",
+        demoUrl: "https://siddu-s-3-d-world-n6ld.vercel.app/",
       },
       {
         slug: 'XOXO-game',
