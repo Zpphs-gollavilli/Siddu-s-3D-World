@@ -129,7 +129,7 @@ export default function Navbar(): JSX.Element {
                         {/* Resume Button in Mobile Menu */}
                         <li className="flex text-white rounded-lg gradient-bg">
                             <a
-                                href="/G_Siddharth_Resume.html"
+                                href="/index1.html"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 download="G_Siddharth_Resume.html"
