@@ -9,16 +9,21 @@ import { BsGithub } from "react-icons/bs";
 import { IoMdOpen } from "react-icons/io";
 import { BsInfoCircle } from "react-icons/bs";
 import styles from "./home.module.css";
-
-// If your icons live in src/assets/...
 import suitcase from "@/assets/images/home/myLatestProject/suitcase.webp";
-import figma    from "@/assets/images/home/myLatestProject/figma.webp";
-import rocket   from "@/assets/images/home/myLatestProject/rocket.webp";
+import figma from "@/assets/images/home/myLatestProject/figma.webp";
+import rocket from "@/assets/images/home/myLatestProject/rocket.webp";
 
-const TAB_ICONS = { project: suitcase, design: figma, more: rocket };
 
-/** One source of truth for your projects: */
-const PROJECTS = [
+/* ---------------- Projects (local data) ---------------- */
+export type Project = {
+  slug: string;
+  title: string;
+  image: string;
+  repositoryUrl: string;
+  demoUrl?: string;
+};
+
+const PROJECTS: Project[] = [
   {
     slug: "siddu-s-world",
     title: "Siddharth-portfolio",
@@ -41,21 +46,21 @@ const PROJECTS = [
     demoUrl: "https://zpphs-gollavilli.github.io/SmashTrack/",
   },
   {
-    slug: "My school project",
+    slug: "my-school-project",
     title: "Zpphs-gollavilli",
     image: "/my_project3.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli",
     demoUrl: "https://zpphs-gollavilli.github.io/",
   },
   {
-    slug: "Siddu-s-celebration",
+    slug: "siddu-s-celebration",
     title: "Siddu-s-celebration",
     image: "/my_project4.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli/Siddu-s-Celebration",
     demoUrl: "https://zpphs-gollavilli.github.io/Siddu-s-Celebration/",
   },
   {
-    slug: "Shinobi-runner",
+    slug: "shinobi-runner",
     title: "Shinobi Runner",
     image: "/my_project5.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli/shinobi-runner",
@@ -63,17 +68,21 @@ const PROJECTS = [
   },
 ];
 
-/** All tabs share the same data now, and all can be selected (turn blue). */
+/* ---------------- Tabs ---------------- */
+const TAB_ICONS = { project: suitcase, design: figma, more: rocket };
+
 const tabs = [
   { name: "Project", image: TAB_ICONS.project, data: PROJECTS },
-  { name: "Design",  image: TAB_ICONS.design,  data: PROJECTS },
-  { name: "More",    image: TAB_ICONS.more,    data: PROJECTS },
+  { name: "Design", image: TAB_ICONS.design, data: PROJECTS },
+  { name: "More", image: TAB_ICONS.more, data: PROJECTS },
 ];
 
+/* ---------------- Component ---------------- */
 export default function SectionMyLatestProject() {
   const [activeTab, setActiveTab] = useState(0);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
+  // Sync tab with ?tab= in URL
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get("tab");
@@ -86,6 +95,7 @@ export default function SectionMyLatestProject() {
       className={`safe-x-padding ${styles.sectionDistance}`}
       aria-label="My Latest Project Section"
     >
+      {/* Section Heading */}
       <div className="text-center">
         <motion.h2
           initial={{ y: 100, opacity: 0 }}
@@ -106,9 +116,10 @@ export default function SectionMyLatestProject() {
         </motion.p>
       </div>
 
+      {/* Tabs + Content */}
       <div className="mt-[50px] h-full">
         <div className="flex flex-col items-center justify-center gap-9 md:flex-row md:items-start">
-          {/* LEFT RAIL TABS */}
+          {/* Left rail tabs */}
           <div className="flex flex-row gap-x-3 rounded-2xl bg-gray p-3 md:flex-col md:gap-x-0 md:gap-y-[26px] md:rounded-[25px] md:p-[26px]">
             {tabs.map((tab, index) => (
               <motion.button
@@ -126,10 +137,19 @@ export default function SectionMyLatestProject() {
                   window.history.pushState({}, "", `?tab=${index}`);
                 }}
               >
-                <Image src={tab.image} alt={tab.name} width={100} height={100} style={{ height: "auto" }} />
-                {/* overlay shouldn't block clicks */}
+                <Image
+                  src={tab.image}
+                  alt={tab.name}
+                  width={100}
+                  height={100}
+                  style={{ height: "auto" }}
+                />
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-gray/10 opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:opacity-100 md:rounded-[25px] md:text-2xl">
-                  <p className={`${activeTab === index ? "text-white" : "text-accent"} font-bold transition-colors`}>
+                  <p
+                    className={`${
+                      activeTab === index ? "text-white" : "text-accent"
+                    } font-bold transition-colors`}
+                  >
                     {tab.name}
                   </p>
                 </div>
@@ -137,7 +157,7 @@ export default function SectionMyLatestProject() {
             ))}
           </div>
 
-          {/* RIGHT GRID */}
+          {/* Right grid */}
           <div className="overflow-hidden">
             <div className="h-[600px] w-full overflow-y-auto rounded-[36px] bg-gray p-[26px]">
               <div className="grid grid-flow-row grid-cols-12 gap-[26px]">
@@ -153,7 +173,7 @@ export default function SectionMyLatestProject() {
                   >
                     <div className="col-span-6">
                       <div className="h-[261px] overflow-hidden rounded-2xl bg-white p-[18px] shadow md:rounded-[25px]">
-                        {/* mini browser chrome */}
+                        {/* Mini browser chrome */}
                         <div className="mb-3 flex h-4 items-center gap-2 px-1">
                           <span className="h-3 w-3 rounded-full bg-red-400" />
                           <span className="h-3 w-3 rounded-full bg-amber-400" />
@@ -172,7 +192,7 @@ export default function SectionMyLatestProject() {
                       </div>
                     </div>
 
-                    {/* hover overlay with actions */}
+                    {/* Hover overlay */}
                     <div className="pointer-events-none absolute inset-0 hidden rounded-2xl bg-gray/10 backdrop-blur-sm transition-all duration-300 group-hover:block md:rounded-[25px]">
                       <div className="flex h-full w-full flex-col items-center justify-center gap-4">
                         <p className="px-6 text-center text-xl font-bold leading-tight line-clamp-1 text-gray-900 drop-shadow">
@@ -203,15 +223,6 @@ export default function SectionMyLatestProject() {
                               </span>
                             </Link>
                           )}
-                          <Link
-                            href={`/project/${item.slug}`}
-                            title={`Detail of ${item.title}`}
-                            className="pointer-events-auto rounded-2xl bg-white/80 px-4 py-3 text-gray-900 shadow hover:bg-white"
-                          >
-                            <span className="inline-flex items-center gap-2">
-                              <BsInfoCircle /> <span>Details</span>
-                            </span>
-                          </Link>
                         </div>
                       </div>
                     </div>
