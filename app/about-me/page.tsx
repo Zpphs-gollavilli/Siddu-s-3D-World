@@ -1,11 +1,15 @@
 "use client";
 
 import React, { Suspense, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+
+/* ---------------- Easing (TS-safe cubic-beziers) ---------------- */
+const easeOutCubic = [0.16, 1, 0.3, 1] as const;
+const easeInOutCubic = [0.65, 0, 0.35, 1] as const;
 
 /* ---------------- 3D: Shinchan + Shiro + Grass (single GLB) ---------------- */
 function ShinchanWorld({
@@ -17,9 +21,11 @@ function ShinchanWorld({
 }) {
   const { scene } = useGLTF(url);
   const ref = useRef<THREE.Object3D | null>(null);
+
   useFrame(() => {
     if (ref.current) ref.current.rotation.y += 0.005;
   });
+
   return <primitive ref={ref} object={scene} scale={scale} position={[0, -0.2, 0]} />;
 }
 useGLTF.preload("/shinchan_world.glb");
@@ -28,13 +34,14 @@ function ShinchanWorldCanvas() {
   const [auto, setAuto] = useState(true);
   const controls = useRef<any>(null);
   let downAt = 0;
+
   const onDown = () => {
     downAt = Date.now();
     setAuto(false);
   };
   const onUp = () => {
     const dt = Date.now() - downAt;
-    if (dt < 180) setAuto((v) => !v);
+    if (dt < 180) setAuto((v) => !v); // quick click toggles play/pause
   };
 
   return (
@@ -52,31 +59,41 @@ function ShinchanWorldCanvas() {
         <Suspense fallback={null}>
           <ShinchanWorld />
         </Suspense>
-        <OrbitControls ref={controls} enablePan={false} enableZoom={false} autoRotate={auto} autoRotateSpeed={2} />
+        <OrbitControls
+          ref={controls}
+          enablePan={false}
+          enableZoom={false}
+          autoRotate={auto}
+          autoRotateSpeed={2}
+        />
       </Canvas>
     </div>
   );
 }
 
 /* ---------------- Animation helpers ---------------- */
-const container = {
+const container: Variants = {
   hidden: {},
   show: {
     transition: { staggerChildren: 0.12, delayChildren: 0.05 },
   },
 };
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { y: 18, opacity: 0 },
-  show: { y: 0, opacity: 1, transition: { duration: 0.55, ease: "easeOut" } },
+  show: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.55, ease: easeOutCubic },
+  },
 };
 
-const floatPulse = {
+const floatPulse: Variants = {
   hidden: { opacity: 0, y: 10 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
+    transition: { duration: 0.6, ease: easeOutCubic },
   },
 };
 
@@ -90,7 +107,7 @@ export default function AboutMe() {
         <motion.h2
           initial={{ scale: 0.96, opacity: 0 }}
           animate={inView ? { scale: 1, opacity: 1 } : {}}
-          transition={{ duration: 0.45 }}
+          transition={{ duration: 0.45, ease: easeOutCubic }}
           className="mb-4 text-4xl md:text-5xl lg:text-6xl font-extrabold font-montserrat"
         >
           <span className="bg-gradient-to-r from-sky-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
@@ -101,7 +118,7 @@ export default function AboutMe() {
         <motion.p
           initial={{ y: 16, opacity: 0 }}
           animate={inView ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.55 }}
+          transition={{ duration: 0.55, ease: easeOutCubic }}
           className="font-medium text-lg md:text-xl text-gray-800/90 max-w-[980px] mx-auto"
         >
           “A powerful smash on the court, a smart move on the chessboard, a melody in the heart,
@@ -184,7 +201,7 @@ export default function AboutMe() {
           <motion.div
             variants={floatPulse}
             animate={{ y: [0, -3, 0], opacity: [0.85, 1, 0.85] }}
-            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+            transition={{ repeat: Infinity, duration: 3, ease: easeInOutCubic }}
             className="h-[3px] w-40 bg-gradient-to-r from-sky-400 to-cyan-500 rounded-full"
           />
         </motion.div>
@@ -193,7 +210,7 @@ export default function AboutMe() {
         <motion.div
           initial={{ x: 24, opacity: 0 }}
           animate={inView ? { x: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: easeOutCubic }}
           className="flex justify-center lg:justify-end"
         >
           <ShinchanWorldCanvas />
