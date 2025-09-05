@@ -1,64 +1,140 @@
 "use client";
 
-import Image from 'next/image';
-import React from 'react';
+import React, { Suspense, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { useInView } from 'react-intersection-observer';
-import Link from 'next/link';
+import { useInView } from "react-intersection-observer";
 import styles from "./home.module.css";
 
-const technologyStack = [
+/* 3D */
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import * as THREE from "three";
+
+/* ---------------- Tech data ---------------- */
+const tech = [
   {
     name: "HTML5",
-    image: "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg",
-    officialSite: "https://developer.mozilla.org/en-US/docs/Web/HTML",
+    img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg",
+    url: "https://developer.mozilla.org/en-US/docs/Web/HTML",
   },
   {
     name: "CSS3",
-    image: "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg",
-    officialSite: "https://developer.mozilla.org/en-US/docs/Web/CSS",
+    img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg",
+    url: "https://developer.mozilla.org/en-US/docs/Web/CSS",
   },
   {
     name: "Three.js",
-    image: "https://raw.githubusercontent.com/devicons/devicon/master/icons/threejs/threejs-original.svg",
-    officialSite: "https://threejs.org/",
+    img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/threejs/threejs-original.svg",
+    url: "https://threejs.org/",
   },
   {
-    name: "Javascript",
-    image: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
-    officialSite: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+    name: "JavaScript",
+    img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
+    url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
   },
   {
-    name: "React JS",
-    image: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
-    officialSite: "https://reactjs.org/",
+    name: "React",
+    img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
+    url: "https://react.dev/",
   },
   {
-    name: "Tailwind CSS",
-    image: "https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-original.svg",
-    officialSite: "https://tailwindcss.com/",
+    name: "Tailwind",
+    img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-original.svg",
+    url: "https://tailwindcss.com/",
   },
   {
-    name: "Typescript",
-    image: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
-    officialSite: "https://www.typescriptlang.org/",
-  }
+    name: "TypeScript",
+    img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
+    url: "https://www.typescriptlang.org/",
+  },
 ];
 
-export default function SectionTechnologyStack() {
-  const { ref, inView } = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
+/* ---------------- Doraemon 3D ---------------- */
+function Doraemon({
+  url = "/doremon.glb",
+  scale = 0.9,
+}: {
+  url?: string;
+  scale?: number;
+}) {
+  const { scene } = useGLTF(url);
+  const ref = useRef<THREE.Object3D>(null!);
+
+  useFrame(() => {
+    if (ref.current) ref.current.rotation.y += 0.01;
   });
 
+  return <primitive ref={ref} object={scene} scale={scale} position={[0, -0.4, 0]} />;
+}
+useGLTF.preload("/doremon.glb");
+
+function DoraemonCanvas() {
+  const [auto, setAuto] = useState(true);
+  const ctrls = useRef<any>(null);
+  let downAt = 0;
+
+  const onPointerDown = () => {
+    downAt = Date.now();
+    setAuto(false);
+  };
+  const onPointerUp = () => {
+    const dt = Date.now() - downAt;
+    if (dt < 180) setAuto((v) => !v);
+  };
+
   return (
-    <section ref={ref} className={`safe-x-padding ${styles.sectionDistance}`}>
-      <div className='text-center'>
+    <div className="w-[180px] h-[200px] md:w-[200px] md:h-[220px] lg:w-[220px] lg:h-[240px] rounded-xl bg-white shadow-sm">
+      <Canvas
+        style={{ width: "100%", height: "100%" }}
+        gl={{ antialias: true }}
+        camera={{ fov: 35, position: [0, 1.2, 3.8] }}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
+      >
+        <color attach="background" args={["#ffffff"]} />
+        <ambientLight intensity={0.95} />
+        <directionalLight position={[5, 6, 6]} intensity={0.9} />
+        <Suspense fallback={null}>
+          <Doraemon />
+        </Suspense>
+        <OrbitControls
+          ref={ctrls}
+          enableZoom={false}
+          enablePan={false}
+          enableDamping
+          dampingFactor={0.08}
+          autoRotate={auto}
+          autoRotateSpeed={2}
+          minPolarAngle={Math.PI / 2.5}
+          maxPolarAngle={Math.PI / 2.5}
+        />
+      </Canvas>
+    </div>
+  );
+}
+
+/* ---------------- Section ---------------- */
+export default function SectionTechnologyStack() {
+  const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
+
+  const rowTop = tech.slice(0, 6);
+  const ts = tech[6];
+
+  return (
+    <section
+      ref={ref}
+      className={`safe-x-padding ${styles.sectionDistance} min-h-[70vh] flex flex-col`}
+      aria-label="Technology Stack"
+    >
+      {/* Heading */}
+      <div className="text-center mb-10">
         <motion.h2
           initial={{ y: 100, opacity: 0 }}
           animate={inView ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 0.5 }}
-          className={styles.sectionTitle}
+          className={`${styles.sectionTitle}`}
         >
           Technology Stack
         </motion.h2>
@@ -66,52 +142,77 @@ export default function SectionTechnologyStack() {
           initial={{ y: 100, opacity: 0 }}
           animate={inView ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 0.7 }}
-          className={`${styles.sectionDescription} max-w-[960px] mx-auto`}
+          className={`${styles.sectionDescription} max-w-[980px] mx-auto`}
         >
-          {"I care deeply about web development, performance, and user experience. That's why I use modern and proven technologies in all my projects."}
+          I care deeply about web development, performance, and user experience.
+          That&apos;s why I use modern and proven technologies in all my projects.
         </motion.p>
       </div>
 
-      <div className='flex items-center justify-center mt-12'>
-        <div className='flex flex-row gap-[50px] max-w-[864px] flex-wrap justify-center items-center'>
-          {technologyStack.map((item, index) => (
-            <div key={index} className='relative h-full'>
+      {/* Content */}
+      <div className="flex flex-1 items-start justify-between gap-6">
+        {/* Left: icons */}
+        <div className="flex-1">
+          <div className="mx-auto max-w-[1000px] grid grid-cols-6 place-items-center gap-y-10">
+            {rowTop.map((t, i) => (
               <motion.div
-                className="flex justify-center items-center w-[100px] h-[100px] transition-all duration-150 ease-in-out"
+                key={t.name}
+                className="group relative flex h-[110px] w-[110px] md:h-[130px] md:w-[130px] items-center justify-center overflow-hidden rounded-xl bg-white shadow-md"
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+                transition={{ duration: 0.6, delay: i * 0.08 }}
                 whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
               >
+                {/* Default: Icon */}
                 <Image
-                  className='w-auto h-[100px]'
-                  src={item.image}
-                  width={100}
-                  height={100}
-                  alt={item.name}
+                  src={t.img}
+                  alt={t.name}
+                  width={80}
+                  height={80}
+                  className="h-[60px] w-[60px] object-contain transition-opacity duration-300 group-hover:opacity-0"
                 />
+                {/* On Hover: Name */}
                 <Link
-                  href={{
-                    pathname: item.officialSite,
-                    query: {
-                      utm_source: 'portfolio',
-                      utm_medium: 'campaign',
-                      utm_campaign: 'tech-stack'
-                    }
-                  }}
+                  href={t.url}
                   target="_blank"
-                  title={`Learn more about ${item.name}`}
+                  className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500 text-white font-semibold opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 >
-                  <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full p-1 text-white transition-all duration-300 bg-opacity-50 opacity-0 gradient-bg hover:opacity-100 rounded-xl">
-                    <p className='font-semibold text-center line-clamp-3'>
-                      {item.name}
-                    </p>
-                  </div>
+                  {t.name}
                 </Link>
               </motion.div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* TypeScript below */}
+          <div className="mt-10 flex justify-center">
+            <motion.div
+              className="group relative flex h-[120px] w-[120px] md:h-[140px] md:w-[140px] items-center justify-center overflow-hidden rounded-xl bg-white shadow-md"
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 6 * 0.08 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <Image
+                src={ts.img}
+                alt={ts.name}
+                width={90}
+                height={90}
+                className="h-[70px] w-[70px] object-contain transition-opacity duration-300 group-hover:opacity-0"
+              />
+              <Link
+                href={ts.url}
+                target="_blank"
+                className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500 text-white font-semibold opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              >
+                {ts.name}
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Right: Doraemon */}
+        <div className="shrink-0 pt-2 pr-1">
+          <DoraemonCanvas />
         </div>
       </div>
     </section>

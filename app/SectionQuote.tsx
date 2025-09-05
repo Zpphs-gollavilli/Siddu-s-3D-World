@@ -62,7 +62,12 @@ export default function SectionQuote() {
     return (
         <section ref={ref} className={`safe-x-padding ${styles.sectionDistance}`} aria-label='Quote Section'>
             <div className='relative'>
-                <motion.p initial={{ y: 100, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 0.5 }} className={styles.creatorQuotes}>
+                <motion.p
+                    initial={{ y: 100, opacity: 0 }}
+                    animate={inView ? { y: 0, opacity: 1 } : {}}
+                    transition={{ duration: 0.5 }}
+                    className={styles.creatorQuotes}
+                >
                    "💬 Let’s connect through live chat — ideas 💡, dreams 🌈, art 🎨, and joy 🎉 — together we make this space shine ✨❤️."
                 </motion.p>
 
@@ -70,8 +75,24 @@ export default function SectionQuote() {
                     <AnimatedImage key={index.toString()} {...item} />
                 ))}
             </div>
-            <motion.p initial={{ y: 100, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 0.5, delay: 0.5 }} className={styles.creatorQuotesName} style={suarte.style}>
-                Siddharth Guttula
+
+            {/* Existing signature (animated) */}
+            <motion.p
+                initial={{ y: 100, opacity: 0 }}
+                animate={inView ? { y: 0, opacity: 1 } : {}}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className={`${styles.creatorQuotesName} text-3xl md:text-4xl`}
+                style={suarte.style}
+            >
+                {/* Lion + Signature */}
+                <motion.span
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className="inline-block mr-2"
+                >
+                    🦁 {/* replace this with Lion SVG later */}
+                </motion.span>
+                G Siddharth
             </motion.p>
         </section >
     )

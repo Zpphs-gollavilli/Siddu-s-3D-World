@@ -12,6 +12,7 @@ import styles from "./home.module.css";
 import suitcase from "@/assets/images/home/myLatestProject/suitcase.webp";
 import figma from "@/assets/images/home/myLatestProject/figma.webp";
 import rocket from "@/assets/images/home/myLatestProject/rocket.webp";
+import DoraemonCanvas from "@/components/DoraemonModel";
 
 
 /* ---------------- Projects (local data) ---------------- */
