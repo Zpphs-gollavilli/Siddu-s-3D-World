@@ -1,21 +1,62 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { BsGithub } from "react-icons/bs";
 import { IoMdOpen } from "react-icons/io";
-import { BsInfoCircle } from "react-icons/bs";
 import styles from "./home.module.css";
 import suitcase from "@/assets/images/home/myLatestProject/suitcase.webp";
 import figma from "@/assets/images/home/myLatestProject/figma.webp";
 import rocket from "@/assets/images/home/myLatestProject/rocket.webp";
-import DoraemonCanvas from "@/components/DoraemonModel";
 
+/* three.js */
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 
-/* ---------------- Projects (local data) ---------------- */
+/* ---------------- Shinchan Model ---------------- */
+function ShinchanModel({
+  url = "/shinchan.glb",
+  scale = 2.0,
+}: {
+  url?: string;
+  scale?: number;
+}) {
+  const { scene } = useGLTF(url);
+  const ref = useRef<THREE.Object3D>(null);
+  return <primitive ref={ref} object={scene} scale={scale} position={[0, -0.5, 0]} />;
+}
+useGLTF.preload("/shinchan.glb");
+
+function ShinchanCanvas() {
+  return (
+    <Canvas
+      shadows
+      camera={{ fov: 40, position: [0, 1.2, 3] }}
+      gl={{ antialias: true }}
+      style={{ width: "100%", height: "100%" }}
+    >
+      <ambientLight intensity={0.9} />
+      <directionalLight position={[5, 6, 6]} intensity={1.1} />
+      <Suspense fallback={null}>
+        <ShinchanModel />
+      </Suspense>
+      <OrbitControls
+        enableZoom={false}
+        enablePan={false}
+        enableDamping
+        dampingFactor={0.08}
+        autoRotate
+        autoRotateSpeed={0.8}
+      />
+    </Canvas>
+  );
+}
+
+/* ---------------- Projects ---------------- */
 export type Project = {
   slug: string;
   title: string;
@@ -119,7 +160,8 @@ export default function SectionMyLatestProject() {
 
       {/* Tabs + Content */}
       <div className="mt-[50px] h-full">
-        <div className="flex flex-col items-center justify-center gap-9 md:flex-row md:items-start">
+        {/* 3 columns on md+ : Tabs | Projects | Shinchan */}
+        <div className="flex flex-col items-center gap-9 md:grid md:grid-cols-[auto,1fr,auto] md:items-start">
           {/* Left rail tabs */}
           <div className="flex flex-row gap-x-3 rounded-2xl bg-gray p-3 md:flex-col md:gap-x-0 md:gap-y-[26px] md:rounded-[25px] md:p-[26px]">
             {tabs.map((tab, index) => (
@@ -158,8 +200,8 @@ export default function SectionMyLatestProject() {
             ))}
           </div>
 
-          {/* Right grid */}
-          <div className="overflow-hidden">
+          {/* Middle: projects grid (same as before) */}
+          <div className="overflow-hidden w-full">
             <div className="h-[600px] w-full overflow-y-auto rounded-[36px] bg-gray p-[26px]">
               <div className="grid grid-flow-row grid-cols-12 gap-[26px]">
                 {tabs[activeTab].data.map((item, dataIndex) => (
@@ -229,6 +271,16 @@ export default function SectionMyLatestProject() {
                     </div>
                   </motion.div>
                 ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Shinchan — same visual size as the suitcase tab */}
+          <div className="hidden md:block sticky top-[26px] pl-1">
+            <div className="w-[150px] h-[150px] rounded-[25px] bg-white shadow-md flex items-center justify-center">
+              {/* Inner canvas box slightly smaller to give padding */}
+              <div className="w-[120px] h-[120px]">
+                <ShinchanCanvas />
               </div>
             </div>
           </div>
