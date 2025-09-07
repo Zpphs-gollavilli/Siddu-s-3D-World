@@ -17,42 +17,54 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
-/* ---------------- Shinchan Model ---------------- */
-function ShinchanModel({
-  url = "/shinchan.glb",
-  scale = 2.0,
-}: {
-  url?: string;
-  scale?: number;
-}) {
+/* ---------------- 3D Mascot (Doraemon / Shinchan) ---------------- */
+function Mascot({ url = "/shinchan.glb", scale = 0.85 }: { url?: string; scale?: number }) {
   const { scene } = useGLTF(url);
   const ref = useRef<THREE.Object3D>(null);
-  return <primitive ref={ref} object={scene} scale={scale} position={[0, -0.5, 0]} />;
+  return <primitive ref={ref} object={scene} scale={scale} position={[0, -0.45, 0]} />;
 }
 useGLTF.preload("/shinchan.glb");
 
-function ShinchanCanvas() {
+function MascotCanvas() {
+  const [auto, setAuto] = useState(true);
+  let downAt = 0;
+
+  const onPointerDown = () => {
+    downAt = Date.now();
+    setAuto(false);
+  };
+  const onPointerUp = () => {
+    const dt = Date.now() - downAt;
+    if (dt < 180) setAuto((v) => !v); // quick tap toggles play/pause
+  };
+
   return (
-    <Canvas
-      shadows
-      camera={{ fov: 40, position: [0, 1.2, 3] }}
-      gl={{ antialias: true }}
-      style={{ width: "100%", height: "100%" }}
-    >
-      <ambientLight intensity={0.9} />
-      <directionalLight position={[5, 6, 6]} intensity={1.1} />
-      <Suspense fallback={null}>
-        <ShinchanModel />
-      </Suspense>
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        enableDamping
-        dampingFactor={0.08}
-        autoRotate
-        autoRotateSpeed={0.8}
-      />
-    </Canvas>
+    <div className="w-full rounded-3xl bg-white shadow-md ring-1 ring-black/5">
+      {/* height is responsive to ensure it shows on phones */}
+      <div className="h-[220px] sm:h-[240px] md:h-[260px] lg:h-[300px]">
+        <Canvas
+          camera={{ fov: 38, position: [0, 1.2, 3.2] }}
+          gl={{ antialias: true }}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+        >
+          <ambientLight intensity={0.95} />
+          <directionalLight position={[5, 6, 6]} intensity={1.1} />
+          <Suspense fallback={null}>
+            <Mascot />
+          </Suspense>
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            autoRotate={auto}
+            autoRotateSpeed={2}
+            // keep a pleasant viewing band so it never flips
+            minPolarAngle={Math.PI / 2.7}
+            maxPolarAngle={Math.PI / 2.1}
+          />
+        </Canvas>
+      </div>
+    </div>
   );
 }
 
@@ -124,7 +136,7 @@ export default function SectionMyLatestProject() {
   const [activeTab, setActiveTab] = useState(0);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
-  // Sync tab with ?tab= in URL
+  // Sync tab with ?tab=
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get("tab");
@@ -158,12 +170,11 @@ export default function SectionMyLatestProject() {
         </motion.p>
       </div>
 
-      {/* Tabs + Content */}
-      <div className="mt-[50px] h-full">
-        {/* 3 columns on md+ : Tabs | Projects | Shinchan */}
-        <div className="flex flex-col items-center gap-9 md:grid md:grid-cols-[auto,1fr,auto] md:items-start">
+      {/* Layout: tabs | content + mascot */}
+      <div className="mt-[40px]">
+        <div className="flex flex-col gap-9 md:flex-row">
           {/* Left rail tabs */}
-          <div className="flex flex-row gap-x-3 rounded-2xl bg-gray p-3 md:flex-col md:gap-x-0 md:gap-y-[26px] md:rounded-[25px] md:p-[26px]">
+          <div className="flex flex-row gap-3 rounded-2xl bg-gray p-3 md:flex-col md:gap-y-[26px] md:rounded-[25px] md:p-[26px] md:shrink-0">
             {tabs.map((tab, index) => (
               <motion.button
                 key={index}
@@ -180,19 +191,9 @@ export default function SectionMyLatestProject() {
                   window.history.pushState({}, "", `?tab=${index}`);
                 }}
               >
-                <Image
-                  src={tab.image}
-                  alt={tab.name}
-                  width={100}
-                  height={100}
-                  style={{ height: "auto" }}
-                />
+                <Image src={tab.image} alt={tab.name} width={100} height={100} style={{ height: "auto" }} />
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-gray/10 opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:opacity-100 md:rounded-[25px] md:text-2xl">
-                  <p
-                    className={`${
-                      activeTab === index ? "text-white" : "text-accent"
-                    } font-bold transition-colors`}
-                  >
+                  <p className={`${activeTab === index ? "text-white" : "text-accent"} font-bold transition-colors`}>
                     {tab.name}
                   </p>
                 </div>
@@ -200,87 +201,94 @@ export default function SectionMyLatestProject() {
             ))}
           </div>
 
-          {/* Middle: projects grid (same as before) */}
-          <div className="overflow-hidden w-full">
-            <div className="h-[600px] w-full overflow-y-auto rounded-[36px] bg-gray p-[26px]">
-              <div className="grid grid-flow-row grid-cols-12 gap-[26px]">
-                {tabs[activeTab].data.map((item, dataIndex) => (
-                  <motion.div
-                    key={item.slug}
-                    className="group relative col-span-12 overflow-hidden xl:col-span-6"
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={inView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.5, delay: 0.1 * dataIndex }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <div className="col-span-6">
-                      <div className="h-[261px] overflow-hidden rounded-2xl bg-white p-[18px] shadow md:rounded-[25px]">
-                        {/* Mini browser chrome */}
-                        <div className="mb-3 flex h-4 items-center gap-2 px-1">
-                          <span className="h-3 w-3 rounded-full bg-red-400" />
-                          <span className="h-3 w-3 rounded-full bg-amber-400" />
-                          <span className="h-3 w-3 rounded-full bg-emerald-400" />
-                        </div>
-                        <div className="relative h-[200px] w-full overflow-hidden rounded-xl">
-                          <Image
-                            src={item.image}
-                            alt={item.title}
-                            width={441}
-                            height={200}
-                            className="h-full w-full object-contain"
-                            priority={dataIndex === 0}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Hover overlay */}
-                    <div className="pointer-events-none absolute inset-0 hidden rounded-2xl bg-gray/10 backdrop-blur-sm transition-all duration-300 group-hover:block md:rounded-[25px]">
-                      <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                        <p className="px-6 text-center text-xl font-bold leading-tight line-clamp-1 text-gray-900 drop-shadow">
-                          {item.title}
-                        </p>
-                        <div className="flex flex-row gap-3 text-lg">
-                          {item.repositoryUrl && (
-                            <Link
-                              href={item.repositoryUrl}
-                              target="_blank"
-                              title="Repository"
-                              className="pointer-events-auto rounded-2xl bg-gray-100 px-4 py-3 text-gray-800 shadow hover:bg-gray-200"
-                            >
-                              <span className="inline-flex items-center gap-2">
-                                <BsGithub /> <span>Source</span>
-                              </span>
-                            </Link>
-                          )}
-                          {item.demoUrl && (
-                            <Link
-                              href={item.demoUrl}
-                              target="_blank"
-                              title="Demo"
-                              className="pointer-events-auto rounded-2xl bg-gray-900 px-4 py-3 text-white shadow hover:bg-black"
-                            >
-                              <span className="inline-flex items-center gap-2">
-                                <IoMdOpen /> <span>Live</span>
-                              </span>
-                            </Link>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+          {/* Right side: content area with mascot responsive block */}
+          <div className="flex-1">
+            {/* Show mascot on mobile FIRST */}
+            <div className="mb-6 md:hidden">
+              <MascotCanvas />
             </div>
-          </div>
 
-          {/* Right: Shinchan — same visual size as the suitcase tab */}
-          <div className="hidden md:block sticky top-[26px] pl-1">
-            <div className="w-[150px] h-[150px] rounded-[25px] bg-white shadow-md flex items-center justify-center">
-              {/* Inner canvas box slightly smaller to give padding */}
-              <div className="w-[120px] h-[120px]">
-                <ShinchanCanvas />
+            <div className="flex gap-6">
+              {/* Projects grid (scrollable card) */}
+              <div className="min-w-0 flex-1">
+                <div className="h-[600px] w-full overflow-y-auto rounded-[36px] bg-gray p-[26px]">
+                  <div className="grid grid-flow-row grid-cols-12 gap-[26px]">
+                    {tabs[activeTab].data.map((item, dataIndex) => (
+                      <motion.div
+                        key={item.slug}
+                        className="group relative col-span-12 overflow-hidden xl:col-span-6"
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={inView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ duration: 0.5, delay: 0.1 * dataIndex }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <div className="col-span-6">
+                          <div className="h-[261px] overflow-hidden rounded-2xl bg-white p-[18px] shadow md:rounded-[25px]">
+                            {/* Mini browser chrome */}
+                            <div className="mb-3 flex h-4 items-center gap-2 px-1">
+                              <span className="h-3 w-3 rounded-full bg-red-400" />
+                              <span className="h-3 w-3 rounded-full bg-amber-400" />
+                              <span className="h-3 w-3 rounded-full bg-emerald-400" />
+                            </div>
+                            <div className="relative h-[200px] w-full overflow-hidden rounded-xl">
+                              <Image
+                                src={item.image}
+                                alt={item.title}
+                                width={441}
+                                height={200}
+                                className="h-full w-full object-contain"
+                                priority={dataIndex === 0}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Hover overlay */}
+                        <div className="pointer-events-none absolute inset-0 hidden rounded-2xl bg-gray/10 backdrop-blur-sm transition-all duration-300 group-hover:block md:rounded-[25px]">
+                          <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                            <p className="px-6 text-center text-xl font-bold leading-tight line-clamp-1 text-gray-900 drop-shadow">
+                              {item.title}
+                            </p>
+                            <div className="flex flex-row gap-3 text-lg">
+                              {item.repositoryUrl && (
+                                <Link
+                                  href={item.repositoryUrl}
+                                  target="_blank"
+                                  title="Repository"
+                                  className="pointer-events-auto rounded-2xl bg-gray-100 px-4 py-3 text-gray-800 shadow hover:bg-gray-200"
+                                >
+                                  <span className="inline-flex items-center gap-2">
+                                    <BsGithub /> <span>Source</span>
+                                  </span>
+                                </Link>
+                              )}
+                              {item.demoUrl && (
+                                <Link
+                                  href={item.demoUrl}
+                                  target="_blank"
+                                  title="Demo"
+                                  className="pointer-events-auto rounded-2xl bg-gray-900 px-4 py-3 text-white shadow hover:bg-black"
+                                >
+                                  <span className="inline-flex items-center gap-2">
+                                    <IoMdOpen /> <span>Live</span>
+                                  </span>
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Mascot sticky on desktop/right */}
+              <div className="hidden md:block md:w-[320px] lg:w-[360px] xl:w-[380px] shrink-0">
+                <div className="sticky top-24">
+                  <MascotCanvas />
+                </div>
               </div>
             </div>
           </div>
