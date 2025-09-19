@@ -17,7 +17,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
-/* ---------------- 3D Mascot (Doraemon / Shinchan) ---------------- */
+/* ---------------- 3D Mascot ---------------- */
 function Mascot({ url = "/shinchan.glb", scale = 0.85 }: { url?: string; scale?: number }) {
   const { scene } = useGLTF(url);
   const ref = useRef<THREE.Object3D>(null);
@@ -40,7 +40,6 @@ function MascotCanvas() {
 
   return (
     <div className="w-full rounded-3xl bg-white shadow-md ring-1 ring-black/5">
-      {/* height is responsive to ensure it shows on phones */}
       <div className="h-[220px] sm:h-[240px] md:h-[260px] lg:h-[300px]">
         <Canvas
           camera={{ fov: 38, position: [0, 1.2, 3.2] }}
@@ -58,7 +57,6 @@ function MascotCanvas() {
             enablePan={false}
             autoRotate={auto}
             autoRotateSpeed={2}
-            // keep a pleasant viewing band so it never flips
             minPolarAngle={Math.PI / 2.7}
             maxPolarAngle={Math.PI / 2.1}
           />
@@ -73,7 +71,7 @@ export type Project = {
   slug: string;
   title: string;
   image: string;
-  repositoryUrl: string;
+  repositoryUrl: string; // "Private" means no link
   demoUrl?: string;
 };
 
@@ -100,13 +98,6 @@ const PROJECTS: Project[] = [
     demoUrl: "https://zpphs-gollavilli.github.io/SmashTrack/",
   },
   {
-    slug: "my-school-project",
-    title: "Zpphs-gollavilli",
-    image: "/my_project3.png",
-    repositoryUrl: "https://github.com/Zpphs-gollavilli",
-    demoUrl: "https://zpphs-gollavilli.github.io/",
-  },
-  {
     slug: "siddu-s-celebration",
     title: "Siddu-s-celebration",
     image: "/my_project4.png",
@@ -119,6 +110,27 @@ const PROJECTS: Project[] = [
     image: "/my_project5.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli/shinobi-runner",
     demoUrl: "https://zpphs-gollavilli.github.io/shinobi-runner/",
+  },
+  {
+    slug: "Evrybloom-Dairy",
+    title: "Evrybloom Dairy",
+    image: "/my_project6.png",
+    repositoryUrl: "Private", // 👈 stays private
+    demoUrl: "https://everbloom-diary-a2a8fbef.base44.app/",
+  },
+  {
+    slug: "My Rupee Book",
+    title: "My Rupee Book",
+    image: "/my_project7.png",
+    repositoryUrl: "Private", // 👈 stays private
+    demoUrl: "https://my-rupee-book-fc5fce5d.base44.app/",
+  },
+  {
+    slug: "Schedulify",
+    title: "Schedulify",
+    image: "/my_project8.png",
+    repositoryUrl: "Private",
+    demoUrl: "https://study-time-70b038c8.base44.app",
   },
 ];
 
@@ -136,7 +148,6 @@ export default function SectionMyLatestProject() {
   const [activeTab, setActiveTab] = useState(0);
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
-  // Sync tab with ?tab=
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tab = urlParams.get("tab");
@@ -144,43 +155,25 @@ export default function SectionMyLatestProject() {
   }, []);
 
   return (
-    <section
-      ref={ref}
-      className={`safe-x-padding ${styles.sectionDistance}`}
-      aria-label="My Latest Project Section"
-    >
-      {/* Section Heading */}
+    <section ref={ref} className={`safe-x-padding ${styles.sectionDistance}`} aria-label="My Latest Project Section">
+      {/* Heading */}
       <div className="text-center">
-        <motion.h2
-          initial={{ y: 100, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5 }}
-          className={styles.sectionTitle}
-        >
+        <motion.h2 initial={{ y: 100, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 0.5 }} className={styles.sectionTitle}>
           My Latest Project
         </motion.h2>
-        <motion.p
-          initial={{ y: 100, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.7 }}
-          className={`${styles.sectionDescription} max-w-[706px] mx-auto`}
-        >
-          Take a look at something I&apos;ve worked on, such as a case study,
-          real project, and more
+        <motion.p initial={{ y: 100, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 0.7 }} className={`${styles.sectionDescription} max-w-[706px] mx-auto`}>
+          Take a look at something I&apos;ve worked on, such as a case study, real project, and more
         </motion.p>
       </div>
 
-      {/* Layout: tabs | content + mascot */}
       <div className="mt-[40px]">
         <div className="flex flex-col gap-9 md:flex-row">
-          {/* Left rail tabs */}
+          {/* Left Tabs */}
           <div className="flex flex-row gap-3 rounded-2xl bg-gray p-3 md:flex-col md:gap-y-[26px] md:rounded-[25px] md:p-[26px] md:shrink-0">
             {tabs.map((tab, index) => (
               <motion.button
                 key={index}
-                className={`relative flex h-[75px] w-[75px] items-center justify-center overflow-hidden rounded-2xl shadow-xl md:h-[150px] md:w-[150px] md:rounded-[25px] ${
-                  activeTab === index ? "gradient-bg" : "bg-white"
-                }`}
+                className={`relative flex h-[75px] w-[75px] items-center justify-center overflow-hidden rounded-2xl shadow-xl md:h-[150px] md:w-[150px] md:rounded-[25px] ${activeTab === index ? "gradient-bg" : "bg-white"}`}
                 initial={{ opacity: 0, y: 50 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
@@ -193,23 +186,19 @@ export default function SectionMyLatestProject() {
               >
                 <Image src={tab.image} alt={tab.name} width={100} height={100} style={{ height: "auto" }} />
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-gray/10 opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:opacity-100 md:rounded-[25px] md:text-2xl">
-                  <p className={`${activeTab === index ? "text-white" : "text-accent"} font-bold transition-colors`}>
-                    {tab.name}
-                  </p>
+                  <p className={`${activeTab === index ? "text-white" : "text-accent"} font-bold transition-colors`}>{tab.name}</p>
                 </div>
               </motion.button>
             ))}
           </div>
 
-          {/* Right side: content area with mascot responsive block */}
+          {/* Right: Projects + Mascot */}
           <div className="flex-1">
-            {/* Show mascot on mobile FIRST */}
             <div className="mb-6 md:hidden">
               <MascotCanvas />
             </div>
-
             <div className="flex gap-6">
-              {/* Projects grid (scrollable card) */}
+              {/* Projects */}
               <div className="min-w-0 flex-1">
                 <div className="h-[600px] w-full overflow-y-auto rounded-[36px] bg-gray p-[26px]">
                   <div className="grid grid-flow-row grid-cols-12 gap-[26px]">
@@ -225,33 +214,24 @@ export default function SectionMyLatestProject() {
                       >
                         <div className="col-span-6">
                           <div className="h-[261px] overflow-hidden rounded-2xl bg-white p-[18px] shadow md:rounded-[25px]">
-                            {/* Mini browser chrome */}
                             <div className="mb-3 flex h-4 items-center gap-2 px-1">
                               <span className="h-3 w-3 rounded-full bg-red-400" />
                               <span className="h-3 w-3 rounded-full bg-amber-400" />
                               <span className="h-3 w-3 rounded-full bg-emerald-400" />
                             </div>
                             <div className="relative h-[200px] w-full overflow-hidden rounded-xl">
-                              <Image
-                                src={item.image}
-                                alt={item.title}
-                                width={441}
-                                height={200}
-                                className="h-full w-full object-contain"
-                                priority={dataIndex === 0}
-                              />
+                              <Image src={item.image} alt={item.title} width={441} height={200} className="h-full w-full object-contain" priority={dataIndex === 0} />
                             </div>
                           </div>
                         </div>
 
-                        {/* Hover overlay */}
+                        {/* Hover Overlay */}
                         <div className="pointer-events-none absolute inset-0 hidden rounded-2xl bg-gray/10 backdrop-blur-sm transition-all duration-300 group-hover:block md:rounded-[25px]">
                           <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                            <p className="px-6 text-center text-xl font-bold leading-tight line-clamp-1 text-gray-900 drop-shadow">
-                              {item.title}
-                            </p>
+                            <p className="px-6 text-center text-xl font-bold leading-tight line-clamp-1 text-gray-900 drop-shadow">{item.title}</p>
                             <div className="flex flex-row gap-3 text-lg">
-                              {item.repositoryUrl && (
+                              {/* Repo button */}
+                              {item.repositoryUrl && item.repositoryUrl !== "Private" ? (
                                 <Link
                                   href={item.repositoryUrl}
                                   target="_blank"
@@ -262,7 +242,13 @@ export default function SectionMyLatestProject() {
                                     <BsGithub /> <span>Source</span>
                                   </span>
                                 </Link>
+                              ) : (
+                                <span className="pointer-events-none rounded-2xl bg-gray-300 px-4 py-3 text-gray-600 shadow">
+                                  <BsGithub /> <span>Private</span>
+                                </span>
                               )}
+
+                              {/* Live button */}
                               {item.demoUrl && (
                                 <Link
                                   href={item.demoUrl}
@@ -284,7 +270,7 @@ export default function SectionMyLatestProject() {
                 </div>
               </div>
 
-              {/* Mascot sticky on desktop/right */}
+              {/* Mascot on desktop */}
               <div className="hidden md:block md:w-[320px] lg:w-[360px] xl:w-[380px] shrink-0">
                 <div className="sticky top-24">
                   <MascotCanvas />
