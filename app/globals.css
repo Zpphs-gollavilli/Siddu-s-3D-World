@@ -2,45 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---------------- Base Layer ---------------- */
 @layer base {
   html {
-    @apply font-poppins;
+    @apply font-poppins scroll-smooth;
   }
 
-  body > div {
-    @apply overflow-x-hidden;
+  body {
+    @apply bg-white text-gray-900 antialiased overflow-x-hidden;
   }
 
-  /* remove highlight */
+  /* remove mobile highlight tap effect */
   * {
     -webkit-tap-highlight-color: transparent;
   }
 }
 
+/* ---------------- Utilities ---------------- */
 @layer utilities {
+  /* Layout safety for large screens */
   .safe-layout {
-    @apply max-w-[1440px] mx-auto !important;
+    @apply max-w-[1440px] mx-auto;
   }
 
+  /* Horizontal padding scaling */
   .safe-x-padding {
-    @apply px-[20px] md:px-[50px] lg:px-[120px];
+    @apply px-4 sm:px-6 md:px-12 lg:px-20 xl:px-32;
   }
 
+  /* Gradient text */
   .gradient-text {
     @apply text-transparent bg-gradient-to-r from-primary to-secondary bg-clip-text;
   }
 
+  /* Gradient backgrounds */
   .gradient-bg {
     @apply bg-gradient-to-r from-primary to-secondary;
   }
 
+  /* Gradient button */
   .gradient-btn {
-    @apply bg-gradient-to-r from-primary to-secondary text-white border-none shadow-md relative z-[1];
+    @apply bg-gradient-to-r from-primary to-secondary text-white border-none 
+           shadow-md relative z-[1] px-6 py-3 rounded-lg font-medium inline-block;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
   }
 }
 
+/* ---------------- Gradient Button Hover ---------------- */
 .gradient-btn:hover {
   transform: scale(1.05);
   color: #fff;
@@ -62,9 +71,14 @@
   left: 0;
 }
 
-/* Mobile & Tablet Hamburger */
+/* ---------------- Divider Styling ---------------- */
+hr {
+  @apply my-8 border-t-2 border-gray-200 w-full max-w-4xl mx-auto;
+}
+
+/* ---------------- Hamburger Menu ---------------- */
 .hamburger svg {
-  @apply w-[40px];
+  @apply w-8 h-8;
   transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -83,10 +97,28 @@
 }
 
 .hamburger input:checked + svg {
-  @apply -rotate-[45deg];
+  @apply -rotate-45;
 }
 
 .hamburger input:checked + svg .line-top-bottom {
   stroke-dasharray: 20 300;
   stroke-dashoffset: -32.42;
+}
+
+/* ---------------- Responsive Typography ---------------- */
+h1 {
+  @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+}
+
+h2 {
+  @apply text-2xl sm:text-3xl md:text-4xl font-semibold;
+}
+
+p {
+  @apply text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed;
+}
+
+/* ---------------- Responsive GLB Container ---------------- */
+.glb-container {
+  @apply w-[220px] sm:w-[300px] md:w-[400px] lg:w-[500px] aspect-square mx-auto;
 }

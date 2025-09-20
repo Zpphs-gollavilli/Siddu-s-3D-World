@@ -13,35 +13,41 @@ import styles from "./home.module.css";
 
 const AnimatedImage = motion(Image);
 
-/* ------------------- 3D: Shinchan (fit nicely) ------------------- */
-function ShinchanModel({
-  url = "/connect_car.glb",
-  scale = 0.4,
-}: {
-  url?: string;
-  scale?: number;
-}) {
+/* ------------------- 3D: India Map (static, centered) ------------------- */
+function IndiaMapModel({ url = "/indian_map_flag.glb" }: { url?: string }) {
   const { scene } = useGLTF(url);
   const ref = useRef<THREE.Object3D>(null);
-  return <primitive ref={ref} object={scene} scale={scale} position={[0, -0.6, 0]} />;
-}
-useGLTF.preload("/connect_car.glb");
 
-function ShinchanCanvas() {
   return (
-    <div className="mt-4 w-[160px] aspect-square sm:w-[180px] md:w-[200px] lg:w-[220px]">
-      <div className="w-full h-full rounded-2xl bg-white shadow ring-1 ring-black/5 overflow-hidden">
+    <primitive
+      ref={ref}
+      object={scene}
+      scale={0.5}
+      position={[0, -1.0, 0]}
+      rotation={[0, 0, 0]}
+    />
+  );
+}
+useGLTF.preload("/indian_map_flag.glb");
+
+function IndiaMapCanvas() {
+  return (
+    <div className="mt-6 w-[300px] sm:w-[360px] md:w-[440px] lg:w-[520px] aspect-square">
+      <div className="relative w-full h-full rounded-2xl overflow-hidden shadow ring-1 ring-black/5 bg-white">
         <Canvas
-          camera={{ fov: 35, position: [0, 1.4, 3.5] }}
+          camera={{ fov: 35, position: [0, 1.2, 5] }}
           gl={{ antialias: true }}
           style={{ width: "100%", height: "100%" }}
         >
-          <ambientLight intensity={0.9} />
-          <directionalLight position={[4, 6, 5]} intensity={1.1} />
+          <ambientLight intensity={1.2} />
+          <directionalLight position={[5, 8, 6]} intensity={1.5} />
+
           <Suspense fallback={null}>
-            <ShinchanModel />
+            <IndiaMapModel />
           </Suspense>
-          <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />
+
+          {/* Static view only */}
+          <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
       </div>
     </div>
@@ -74,42 +80,47 @@ export default function SectionLetsConnect() {
           transition={{ duration: 0.7 }}
           className={`${styles.sectionDescription} max-w-[730px] mx-auto`}
         >
-          Do you have any questions or a project in mind? Let&apos;s connect! through Live Chat.  
-          I’m here to help and excited to hear from you.
+          Do you have any questions or a project in mind? Let&apos;s connect
+          through Live Chat. I’m here to help and excited to hear from you.
         </motion.p>
       </div>
 
       {/* Content */}
       <div className="h-full mt-6 flex flex-col items-center justify-center gap-6">
-        {/* Avatar */}
-        <AnimatedImage
-          initial={{ y: 50, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="w-52 h-52 sm:w-72 sm:h-72 lg:w-[530px] lg:h-[530px] rounded-full bg-gray lg:bg-transparent"
-          src={assets.home.letsConnect.avatarBigSmile}
-          alt="Avatar"
-          width={530}
-          height={530}
-          priority
-        />
+        {/* Avatar with glowing background */}
+        <div className="relative flex items-center justify-center">
+          {/* Glowing animated gradient background */}
+          <div className="absolute w-[260px] sm:w-[340px] lg:w-[560px] h-[260px] sm:h-[340px] lg:h-[560px] rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 blur-3xl opacity-80 animate-pulse" />
+          {/* Avatar */}
+          <AnimatedImage
+            initial={{ y: 50, opacity: 0 }}
+            animate={inView ? { y: 0, opacity: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="relative w-52 h-52 sm:w-72 sm:h-72 lg:w-[500px] lg:h-[500px] rounded-full"
+            src={assets.home.letsConnect.avatarBigSmile}
+            alt="Avatar"
+            width={500}
+            height={500}
+            priority
+          />
+        </div>
 
-        {/* Shinchan GLB (fits square) */}
-        <ShinchanCanvas />
+        {/* India Map (static, centered) */}
+        <IndiaMapCanvas />
 
-        {/* Social icons (responsive) */}
-        <div className="flex flex-row flex-wrap items-center justify-center gap-6 mt-6">
+        {/* Social icons (only GitHub & Gmail) */}
+        <div className="flex flex-row items-center justify-center gap-20 mt-6">
           {/* GitHub */}
           <AnimatedImage
             initial={{ y: -50, opacity: 0 }}
             animate={inView ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="hover:cursor-pointer w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
+            whileHover={{ scale: 1.1 }}
+            className="hover:cursor-pointer w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
             src={assets.home.letsConnect.github}
             alt="GitHub"
-            width={140}
-            height={140}
-            tabIndex={0}
+            width={120}
+            height={120}
             onClick={() => window.open("https://github.com/zpphs-gollavilli", "_blank")}
           />
 
@@ -118,13 +129,15 @@ export default function SectionLetsConnect() {
             initial={{ y: 50, opacity: 0 }}
             animate={inView ? { y: 0, opacity: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="hover:cursor-pointer w-[100px] h-[100px] md:w-[140px] md:h-[140px]"
+            whileHover={{ scale: 1.1 }}
+            className="hover:cursor-pointer w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
             src={assets.home.letsConnect.gmail}
             alt="Gmail"
-            width={140}
-            height={140}
-            tabIndex={0}
-            onClick={() => (window.location.href = "mailto:guttulasiddharth1109@email.com")}
+            width={120}
+            height={120}
+            onClick={() =>
+              (window.location.href = "mailto:guttulasiddharth1109@email.com")
+            }
           />
         </div>
       </div>

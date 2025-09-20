@@ -1,4 +1,5 @@
 const { fontFamily } = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -14,7 +15,9 @@ module.exports = {
         secondary: "#00F0FF",
         accent: "#000000",
         accent2: "#8E8E8E",
-        gray: "#F1F1F1",
+        // keep Tailwind gray scale + add your custom
+        gray: colors.gray,
+        customGray: "#F1F1F1",
       },
     },
     fontFamily: {
