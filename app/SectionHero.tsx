@@ -67,7 +67,7 @@ export default function SectionHero(): JSX.Element {
     return (
         <section ref={ref} className='safe-x-padding mt-10 mb-[172px]' aria-label='Hero Section'>
             <div className='grid grid-flow-row gap-10 xl:grid-cols-2 xl:grid-flow-col xl:gap-0'>
-                
+
                 {/* Left Column - Intro */}
                 <div className='flex flex-col items-center justify-center order-2 xl:items-start xl:order-1'>
                     <motion.p
@@ -91,14 +91,14 @@ export default function SectionHero(): JSX.Element {
                         I&apos;m Siddharth Guttula. A passionate Full Stack Web Developer based in Andhra Pradesh, India.
                     </motion.p>
 
-                    {/* ✅ Tagline placed correctly below */}
+                    {/* ✅ Gradient tagline with natural 🌍 emoji */}
                     <motion.p
-                        className="mt-4 text-lg md:text-xl lg:text-2xl font-semibold text-center xl:text-left text-purple-500"
+                        className="mt-6 text-2xl md:text-3xl lg:text-4xl font-bold text-center xl:text-left"
                         initial={{ opacity: 0, y: 20 }}
                         animate={inView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 1.2, duration: 0.8 }}
                     >
-                        🌍 Not Just a Portfolio – It’s My Story in 3D 🌍
+                        🌍 <span className="gradient-text">Not Just a Portfolio – It’s My Story in 3D</span> 🌍
                     </motion.p>
                 </div>
 

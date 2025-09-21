@@ -16,19 +16,13 @@ import rocket from "@/assets/images/home/myLatestProject/rocket.webp";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+
 /* ---------------- 3D Mascot ---------------- */
 function Mascot({ url = "/taj_mahal.glb" }: { url?: string }) {
   const { scene } = useGLTF(url);
   const ref = useRef<THREE.Object3D>(null);
 
-  return (
-    <primitive
-      ref={ref}
-      object={scene}
-      scale={0.4}              // 👈 smaller size
-      position={[0, -0.5, 0]}  // 👈 centered nicely
-    />
-  );
+  return <primitive ref={ref} object={scene} scale={0.4} position={[0, -0.5, 0]} />;
 }
 useGLTF.preload("/taj_mahal.glb");
 
@@ -36,16 +30,12 @@ function MascotCanvas() {
   const [auto, setAuto] = useState(true);
   let downAt = 0;
 
-  // detect click vs drag
   const onPointerDown = () => {
     downAt = Date.now();
   };
   const onPointerUp = () => {
     const dt = Date.now() - downAt;
-    if (dt < 200) {
-      // quick click → toggle rotation
-      setAuto((v) => !v);
-    }
+    if (dt < 200) setAuto((v) => !v); // toggle rotate
   };
 
   return (
@@ -59,16 +49,14 @@ function MascotCanvas() {
         >
           <ambientLight intensity={0.9} />
           <directionalLight position={[5, 6, 6]} intensity={1.2} />
-
           <Suspense fallback={null}>
             <Mascot />
           </Suspense>
-
           <OrbitControls
             enableZoom={false}
             enablePan={false}
-            autoRotate={auto}        // 👈 auto-rotate toggle
-            autoRotateSpeed={2}      // speed of rotation
+            autoRotate={auto}
+            autoRotateSpeed={2}
             minPolarAngle={Math.PI / 2.8}
             maxPolarAngle={Math.PI / 2.1}
           />
@@ -78,13 +66,12 @@ function MascotCanvas() {
   );
 }
 
-
 /* ---------------- Projects ---------------- */
 export type Project = {
   slug: string;
   title: string;
   image: string;
-  repositoryUrl: string; // "Private" means no link
+  repositoryUrl: string;
   demoUrl?: string;
 };
 
@@ -152,15 +139,44 @@ const PROJECTS: Project[] = [
     repositoryUrl: "Private",
     demoUrl: "https://eclipse-wanderer-cosmic-legacy-d41897eb.base44.app",
   },
+  {
+    slug: "quantum-spin",
+    title: "Quantum Spin",
+    image: "/my_project10.png",
+    repositoryUrl: "Private",
+    demoUrl: "https://quantum-spin-835e01b3.base44.app/",
+  },
 ];
 
 /* ---------------- Tabs ---------------- */
 const TAB_ICONS = { project: suitcase, design: figma, more: rocket };
 
 const tabs = [
-  { name: "Project", image: TAB_ICONS.project, data: PROJECTS },
-  { name: "Design", image: TAB_ICONS.design, data: PROJECTS },
-  { name: "More", image: TAB_ICONS.more, data: PROJECTS },
+  {
+    name: "Project",
+    image: TAB_ICONS.project,
+    data: PROJECTS.filter(
+      (p) =>
+        ["siddu-s-world", "Schedulify", "My Rupee Book", "Evrybloom-Dairy"].includes(p.slug)
+    ),
+  },
+  {
+    name: "Design",
+    image: TAB_ICONS.design,
+    data: PROJECTS.filter(
+      (p) =>
+        ["siddu-s-world", "XOXO-game", "smash-track", "siddu-s-celebration", "shinobi-runner"].includes(
+          p.slug
+        )
+    ),
+  },
+  {
+    name: "More",
+    image: TAB_ICONS.more,
+    data: PROJECTS.filter(
+      (p) => ["siddu-s-world", "Eclipse-Wanderer-Cosmic-Legacy", "quantum-spin"].includes(p.slug)
+    ),
+  },
 ];
 
 /* ---------------- Component ---------------- */
@@ -175,11 +191,7 @@ export default function SectionMyLatestProject() {
   }, []);
 
   return (
-    <section
-      ref={ref}
-      className={`safe-x-padding ${styles.sectionDistance}`}
-      aria-label="My Latest Project Section"
-    >
+    <section ref={ref} className={`safe-x-padding ${styles.sectionDistance}`}>
       {/* Heading */}
       <div className="text-center">
         <motion.h2
@@ -204,7 +216,7 @@ export default function SectionMyLatestProject() {
       <div className="mt-[40px]">
         <div className="flex flex-col gap-9 md:flex-row">
           {/* Left Tabs */}
-          <div className="flex flex-row gap-3 rounded-2xl bg-gray p-3 md:flex-col md:gap-y-[26px] md:rounded-[25px] md:p-[26px] md:shrink-0">
+          <div className="flex flex-row justify-center gap-6 sm:gap-8 rounded-2xl bg-gray p-4 md:flex-col md:gap-y-[26px] md:rounded-[25px] md:p-[26px] md:shrink-0">
             {tabs.map((tab, index) => (
               <motion.button
                 key={index}
@@ -221,13 +233,7 @@ export default function SectionMyLatestProject() {
                   window.history.pushState({}, "", `?tab=${index}`);
                 }}
               >
-                <Image
-                  src={tab.image}
-                  alt={tab.name}
-                  width={100}
-                  height={100}
-                  style={{ height: "auto" }}
-                />
+                <Image src={tab.image} alt={tab.name} width={100} height={100} />
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-gray/10 opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:opacity-100 md:rounded-[25px] md:text-2xl">
                   <p
                     className={`${
@@ -241,7 +247,7 @@ export default function SectionMyLatestProject() {
             ))}
           </div>
 
-          {/* Right: Projects + Mascot */}
+          {/* Right Content */}
           <div className="flex-1">
             <div className="mb-6 md:hidden">
               <MascotCanvas />
@@ -288,7 +294,6 @@ export default function SectionMyLatestProject() {
                               {item.title}
                             </p>
                             <div className="flex flex-row gap-3 text-lg">
-                              {/* Repo button */}
                               {item.repositoryUrl && item.repositoryUrl !== "Private" ? (
                                 <Link
                                   href={item.repositoryUrl}
@@ -305,8 +310,6 @@ export default function SectionMyLatestProject() {
                                   <BsGithub /> <span>Private</span>
                                 </span>
                               )}
-
-                              {/* Live button */}
                               {item.demoUrl && (
                                 <Link
                                   href={item.demoUrl}
@@ -328,7 +331,7 @@ export default function SectionMyLatestProject() {
                 </div>
               </div>
 
-              {/* Mascot on desktop */}
+              {/* Mascot (desktop) */}
               <div className="hidden md:block md:w-[320px] lg:w-[360px] xl:w-[380px] shrink-0">
                 <div className="sticky top-24">
                   <MascotCanvas />
