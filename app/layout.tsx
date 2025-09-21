@@ -13,6 +13,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const tawkUrl = process.env.NEXT_PUBLIC_TAWKTO_URL;
+
   return (
     <html
       lang="en"
@@ -22,20 +24,22 @@ export default function RootLayout({
         <Navbar />
         {children}
 
-        {/* ✅ Tawk.to Live Chat Script */}
-        <Script id="tawk-to" strategy="afterInteractive">
-          {`
-            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-            (function(){
-              var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-              s1.async=true;
-              s1.src='https://embed.tawk.to/68a1a6d64ebc491927e0952b/1j2rn7e9e';
-              s1.charset='UTF-8';
-              s1.setAttribute('crossorigin','*');
-              s0.parentNode.insertBefore(s1,s0);
-            })();
-          `}
-        </Script>
+        {/* ✅ Tawk.to Live Chat Script from env */}
+        {tawkUrl && (
+          <Script id="tawk-to" strategy="afterInteractive">
+            {`
+              var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+              (function(){
+                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+                s1.async=true;
+                s1.src='${tawkUrl}';
+                s1.charset='UTF-8';
+                s1.setAttribute('crossorigin','*');
+                s0.parentNode.insertBefore(s1,s0);
+              })();
+            `}
+          </Script>
+        )}
       </body>
     </html>
   );

@@ -35,20 +35,12 @@ yarn-error.log*
 next-env.d.ts
 
 
-# Firebase related files
-firebase.json
-.firebaserc
-.firebase/
-firebase-debug.log
-firestore.indexes.json
-firestore.rules
-storage.rules
 
+# dotenv environment variables file
 .env
 .env.local
 .env.*.local
-tawk.env
 
 
-
+# vercel
 .vercel
