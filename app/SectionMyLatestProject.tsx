@@ -146,6 +146,13 @@ const PROJECTS: Project[] = [
     repositoryUrl: "Private",
     demoUrl: "https://quantum-spin-835e01b3.base44.app/",
   },
+  {
+    slug: "time-table-pro-app",
+    title: "Time Table Pro App",
+    image: "/my_project11.png",
+    repositoryUrl: "Private",
+    demoUrl: "https://v0-time-table-generator-beta.vercel.app/",
+  },
 ];
 
 /* ---------------- Tabs ---------------- */
@@ -157,7 +164,7 @@ const tabs = [
     image: TAB_ICONS.project,
     data: PROJECTS.filter(
       (p) =>
-        ["siddu-s-world", "Schedulify", "My Rupee Book", "Evrybloom-Dairy"].includes(p.slug)
+        ["siddu-s-world", "Schedulify", "My Rupee Book", "Evrybloom-Dairy","time-table-pro-app"].includes(p.slug)
     ),
   },
   {
