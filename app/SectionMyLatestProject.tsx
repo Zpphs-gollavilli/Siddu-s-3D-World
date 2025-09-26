@@ -73,6 +73,7 @@ export type Project = {
   image: string;
   repositoryUrl: string;
   demoUrl?: string;
+  description: string; // NEW
 };
 
 const PROJECTS: Project[] = [
@@ -82,6 +83,7 @@ const PROJECTS: Project[] = [
     image: "/my_project.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli/siddu-s-3D-world",
     demoUrl: "https://siddu-s-3-d-world.vercel.app",
+    description: "3D interactive portfolio showcasing my work",
   },
   {
     slug: "XOXO-game",
@@ -89,6 +91,7 @@ const PROJECTS: Project[] = [
     image: "/my_project1.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli/xoxo-clash",
     demoUrl: "https://zpphs-gollavilli.github.io/XOXO-CLASH/",
+    description: "Classic tic tac toe with modern animations",
   },
   {
     slug: "smash-track",
@@ -96,6 +99,7 @@ const PROJECTS: Project[] = [
     image: "/my_project2.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli/smash-track",
     demoUrl: "https://zpphs-gollavilli.github.io/SmashTrack/",
+    description: "Track badminton progress with performance stats",
   },
   {
     slug: "siddu-s-celebration",
@@ -103,6 +107,7 @@ const PROJECTS: Project[] = [
     image: "/my_project4.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli/Siddu-s-Celebration",
     demoUrl: "https://zpphs-gollavilli.github.io/Siddu-s-Celebration/",
+    description: "Interactive birthday celebration website with effects",
   },
   {
     slug: "shinobi-runner",
@@ -110,6 +115,7 @@ const PROJECTS: Project[] = [
     image: "/my_project5.png",
     repositoryUrl: "https://github.com/Zpphs-gollavilli/shinobi-runner",
     demoUrl: "https://zpphs-gollavilli.github.io/shinobi-runner/",
+    description: "Fast ninja endless runner web based game",
   },
   {
     slug: "Evrybloom-Dairy",
@@ -117,6 +123,7 @@ const PROJECTS: Project[] = [
     image: "/my_project6.png",
     repositoryUrl: "Private",
     demoUrl: "https://everbloom-diary-a2a8fbef.base44.app/",
+    description: "Smart dairy management app with daily records",
   },
   {
     slug: "My Rupee Book",
@@ -124,6 +131,7 @@ const PROJECTS: Project[] = [
     image: "/my_project7.png",
     repositoryUrl: "Private",
     demoUrl: "https://my-rupee-book-fc5fce5d.base44.app/",
+    description: "Personal finance manager tracking daily expenses",
   },
   {
     slug: "Schedulify",
@@ -131,6 +139,7 @@ const PROJECTS: Project[] = [
     image: "/my_project8.png",
     repositoryUrl: "Private",
     demoUrl: "https://study-time-70b038c8.base44.app",
+    description: "Schedule planner app with smart notifications",
   },
   {
     slug: "Eclipse-Wanderer-Cosmic-Legacy",
@@ -138,6 +147,7 @@ const PROJECTS: Project[] = [
     image: "/my_project9.png",
     repositoryUrl: "Private",
     demoUrl: "https://eclipse-wanderer-cosmic-legacy-d41897eb.base44.app",
+    description: "Space adventure game exploring cosmic mysteries",
   },
   {
     slug: "quantum-spin",
@@ -145,6 +155,7 @@ const PROJECTS: Project[] = [
     image: "/my_project10.png",
     repositoryUrl: "Private",
     demoUrl: "https://quantum-spin-835e01b3.base44.app/",
+    description: "Puzzle game inspired by quantum mechanics spin",
   },
   {
     slug: "time-table-pro-app",
@@ -152,6 +163,7 @@ const PROJECTS: Project[] = [
     image: "/my_project11.png",
     repositoryUrl: "Private",
     demoUrl: "https://v0-time-table-generator-beta.vercel.app/",
+    description: "Smart timetable generator for students and schools",
   },
 ];
 
@@ -164,7 +176,7 @@ const tabs = [
     image: TAB_ICONS.project,
     data: PROJECTS.filter(
       (p) =>
-        ["siddu-s-world", "Schedulify", "My Rupee Book", "Evrybloom-Dairy","time-table-pro-app"].includes(p.slug)
+        ["siddu-s-world", "Schedulify", "My Rupee Book", "Evrybloom-Dairy", "time-table-pro-app"].includes(p.slug)
     ),
   },
   {
@@ -172,9 +184,7 @@ const tabs = [
     image: TAB_ICONS.design,
     data: PROJECTS.filter(
       (p) =>
-        ["siddu-s-world", "XOXO-game", "smash-track", "siddu-s-celebration", "shinobi-runner"].includes(
-          p.slug
-        )
+        ["siddu-s-world", "XOXO-game", "smash-track", "siddu-s-celebration", "shinobi-runner"].includes(p.slug)
     ),
   },
   {
@@ -287,7 +297,7 @@ export default function SectionMyLatestProject() {
                                 alt={item.title}
                                 width={441}
                                 height={200}
-                                className="h-full w-full object-contain"
+                                className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
                                 priority={dataIndex === 0}
                               />
                             </div>
@@ -296,11 +306,24 @@ export default function SectionMyLatestProject() {
 
                         {/* Hover Overlay */}
                         <div className="pointer-events-none absolute inset-0 hidden rounded-2xl bg-gray/10 backdrop-blur-sm transition-all duration-300 group-hover:block md:rounded-[25px]">
-                          <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                            <p className="px-6 text-center text-xl font-bold leading-tight line-clamp-1 text-gray-900 drop-shadow">
+                          <div className="flex h-full w-full flex-col items-center justify-center gap-3 px-4 text-center">
+                            <motion.p
+                              className="text-xl font-bold text-gray-900 drop-shadow"
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={inView ? { opacity: 1, y: 0 } : {}}
+                              transition={{ duration: 0.3 }}
+                            >
                               {item.title}
-                            </p>
-                            <div className="flex flex-row gap-3 text-lg">
+                            </motion.p>
+                            <motion.p
+                              className="text-sm text-gray-700"
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={inView ? { opacity: 1, y: 0 } : {}}
+                              transition={{ duration: 0.4, delay: 0.1 }}
+                            >
+                              {item.description}
+                            </motion.p>
+                            <div className="flex flex-row gap-3 text-lg mt-2">
                               {item.repositoryUrl && item.repositoryUrl !== "Private" ? (
                                 <Link
                                   href={item.repositoryUrl}
