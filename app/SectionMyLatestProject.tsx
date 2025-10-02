@@ -165,6 +165,14 @@ const PROJECTS: Project[] = [
     demoUrl: "https://v0-time-table-generator-beta.vercel.app/",
     description: "Smart timetable generator for students and schools",
   },
+  {
+    slug: "neon-nexus-xoxo",
+    title: "Neon Nexus: XOXO",
+    image: "/my_project12.png",
+    repositoryUrl: "Private",
+    demoUrl: "https://neon-nexus-xoxo-c648165c.base44.app/",
+    description: "Classic tic tac toe with modern animations and 3d effects.",
+  },
 ];
 
 /* ---------------- Tabs ---------------- */
@@ -191,7 +199,7 @@ const tabs = [
     name: "More",
     image: TAB_ICONS.more,
     data: PROJECTS.filter(
-      (p) => ["siddu-s-world", "Eclipse-Wanderer-Cosmic-Legacy", "quantum-spin"].includes(p.slug)
+      (p) => ["siddu-s-world", "Eclipse-Wanderer-Cosmic-Legacy", "quantum-spin", "neon-nexus-xoxo"].includes(p.slug)
     ),
   },
 ];
