@@ -215,6 +215,9 @@ export default function SectionMyLatestProject() {
     if (tab && parseInt(tab) < tabs.length) setActiveTab(parseInt(tab));
   }, []);
 
+
+  
+
   return (
     <section ref={ref} className={`safe-x-padding ${styles.sectionDistance}`}>
       {/* Heading */}
