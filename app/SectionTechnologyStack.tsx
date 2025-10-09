@@ -25,18 +25,17 @@ const techCategories = {
     { name: "Tailwind", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-original.svg", url: "https://tailwindcss.com/" },
     { name: "Bootstrap", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-original.svg", url: "https://getbootstrap.com/" },
     { name: "Three.js", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/threejs/threejs-original.svg", url: "https://threejs.org/" },
-    { name: "Figma", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg", url: "https://figma.com/" },
+    { name: "Figma", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg", url: "https://figma.com/" }
   ],
 
   Backend: [
     { name: "Node.js", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg", url: "https://nodejs.org/" },
     { name: "Express", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg", url: "https://expressjs.com/" },
-    { name: "Next.js", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-line.svg", url: "https://nextjs.org/" },
     { name: "Python", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg", url: "https://www.python.org/" },
     { name: "Flask", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/flask/flask-original.svg", url: "https://flask.palletsprojects.com/" },
     { name: "Django", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/django/django-plain.svg", url: "https://www.djangoproject.com/" },
     { name: "Go", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original.svg", url: "https://go.dev/" },
-    { name: "Rust", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/rust/rust-original.svg", url: "https://www.rust-lang.org/" },
+    { name: "Rust", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/rust/rust-original.svg", url: "https://www.rust-lang.org/" }
   ],
 
   Database: [
@@ -45,7 +44,7 @@ const techCategories = {
     { name: "PostgreSQL", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg", url: "https://www.postgresql.org/" },
     { name: "SQLite", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/sqlite/sqlite-original.svg", url: "https://www.sqlite.org/" },
     { name: "Redis", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg", url: "https://redis.io/" },
-    { name: "Firebase", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/firebase/firebase-plain.svg", url: "https://firebase.google.com/" },
+    { name: "Firebase", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/firebase/firebase-plain.svg", url: "https://firebase.google.com/" }
   ],
 
   "Cloud & DevOps": [
@@ -55,26 +54,18 @@ const techCategories = {
     { name: "Docker", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg", url: "https://www.docker.com/" },
     { name: "Kubernetes", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/kubernetes/kubernetes-plain.svg", url: "https://kubernetes.io/" },
     { name: "GitHub Actions", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", url: "https://github.com/features/actions" },
-    { name: "Vercel", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg", url: "https://vercel.com/" },
+    { name: "Vercel", img: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg", url: "https://vercel.com/" }
   ],
 
   "AI / ML": [
     { name: "TensorFlow", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/tensorflow/tensorflow-original.svg", url: "https://www.tensorflow.org/" },
     { name: "PyTorch", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/pytorch/pytorch-original.svg", url: "https://pytorch.org/" },
     { name: "Keras", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/keras/keras-original.svg", url: "https://keras.io/" },
-    { name: "Scikit-learn", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/scikit-learn/scikit-learn-original.svg", url: "https://scikit-learn.org/" },
     { name: "OpenCV", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/opencv/opencv-original.svg", url: "https://opencv.org/" },
-    { name: "Hugging Face", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/huggingface/huggingface-original.svg", url: "https://huggingface.co/" },
-    { name: "Jupyter", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/jupyter/jupyter-original.svg", url: "https://jupyter.org/" },
-    { name: "OpenAI", img: "https://upload.wikimedia.org/wikipedia/commons/0/04/OpenAI_Logo.svg", url: "https://openai.com/" },
-    { name: "LangChain", img: "https://raw.githubusercontent.com/langchain-ai/langchain-assets/main/langchain.png", url: "https://www.langchain.com/" },
-    { name: "Weights & Biases", img: "https://raw.githubusercontent.com/wandb/assets/main/logo.png", url: "https://wandb.ai/" }
   ],
 
   "3D / Graphics / Animation": [
     { name: "Blender", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/blender/blender-original.svg", url: "https://www.blender.org/" },
-    { name: "Maya", img: "https://upload.wikimedia.org/wikipedia/commons/c/cf/Autodesk_Maya_logo.svg", url: "https://www.autodesk.com/products/maya/overview" },
-    { name: "Cinema 4D", img: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Cinema_4D_Logo.svg", url: "https://www.maxon.net/en/cinema-4d" }
   ],
 
   "Tools & IDEs": [
@@ -82,10 +73,10 @@ const techCategories = {
     { name: "VS Code", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg", url: "https://code.visualstudio.com/" },
     { name: "Postman", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postman/postman-original.svg", url: "https://postman.com/" },
     { name: "Linux", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg", url: "https://www.linux.org/" },
-    { name: "Notion", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/notion/notion-original.svg", url: "https://notion.so/" },
-    { name: "Figma", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg", url: "https://figma.com/" }
+    { name: "Notion", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/notion/notion-original.svg", url: "https://notion.so/" }
   ]
 };
+
 
 
 /* ---------------- 3D Doraemon ---------------- */

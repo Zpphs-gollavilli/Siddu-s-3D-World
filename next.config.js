@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true
-  }
+  images: {
+    domains: [
+      'raw.githubusercontent.com',
+      'cdn.jsdelivr.net',
+      'upload.wikimedia.org'
+    ],
+  },
 };
+
+
 module.exports = nextConfig;
