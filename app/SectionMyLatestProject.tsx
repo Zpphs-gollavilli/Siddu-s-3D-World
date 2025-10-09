@@ -173,6 +173,14 @@ const PROJECTS: Project[] = [
     demoUrl: "https://neon-nexus-xoxo-c648165c.base44.app/",
     description: "Classic tic tac toe with modern animations and 3d effects.",
   },
+  {
+    slug: "Siddu-rubik's-cube",
+    title: "Siddu's Rubik's Cube",
+    image: "/my_project13.png",
+    repositoryUrl: "https://github.com/Zpphs-gollavilli/siddu-s-rubik-s-cube",
+    demoUrl: "https://siddu-s-rubik-s-cube.netlify.app/",
+    description: "Rubik's cube for you 😎.",
+  },
 ];
 
 /* ---------------- Tabs ---------------- */
@@ -192,7 +200,7 @@ const tabs = [
     image: TAB_ICONS.design,
     data: PROJECTS.filter(
       (p) =>
-        ["siddu-s-world", "XOXO-game", "smash-track", "siddu-s-celebration", "shinobi-runner"].includes(p.slug)
+        ["siddu-s-world", "XOXO-game", "smash-track", "siddu-s-celebration", "shinobi-runner","Siddu-rubik's-cube"].includes(p.slug)
     ),
   },
   {
