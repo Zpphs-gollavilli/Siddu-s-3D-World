@@ -68,14 +68,13 @@ const techCategories = {
     { name: "Jupyter", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/jupyter/jupyter-original.svg", url: "https://jupyter.org/" },
     { name: "OpenAI", img: "https://upload.wikimedia.org/wikipedia/commons/0/04/OpenAI_Logo.svg", url: "https://openai.com/" },
     { name: "LangChain", img: "https://raw.githubusercontent.com/langchain-ai/langchain-assets/main/langchain.png", url: "https://www.langchain.com/" },
-    { name: "Weights & Biases", img: "https://raw.githubusercontent.com/wandb/assets/main/logo.png", url: "https://wandb.ai/" },
+    { name: "Weights & Biases", img: "https://raw.githubusercontent.com/wandb/assets/main/logo.png", url: "https://wandb.ai/" }
   ],
 
   "3D / Graphics / Animation": [
     { name: "Blender", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/blender/blender-original.svg", url: "https://www.blender.org/" },
     { name: "Maya", img: "https://upload.wikimedia.org/wikipedia/commons/c/cf/Autodesk_Maya_logo.svg", url: "https://www.autodesk.com/products/maya/overview" },
-    { name: "Cinema 4D", img: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Cinema_4D_Logo.svg", url: "https://www.maxon.net/en/cinema-4d" },
-    { name: "Three.js", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/threejs/threejs-original.svg", url: "https://threejs.org/" },
+    { name: "Cinema 4D", img: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Cinema_4D_Logo.svg", url: "https://www.maxon.net/en/cinema-4d" }
   ],
 
   "Tools & IDEs": [
@@ -84,8 +83,8 @@ const techCategories = {
     { name: "Postman", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postman/postman-original.svg", url: "https://postman.com/" },
     { name: "Linux", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg", url: "https://www.linux.org/" },
     { name: "Notion", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/notion/notion-original.svg", url: "https://notion.so/" },
-    { name: "Figma", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg", url: "https://figma.com/" },
-  ],
+    { name: "Figma", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg", url: "https://figma.com/" }
+  ]
 };
 
 
