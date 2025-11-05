@@ -78,12 +78,12 @@ export type Project = {
 
 const PROJECTS: Project[] = [
   {
-    slug: "siddu-s-world",
-    title: "Siddharth-portfolio",
-    image: "/my_project.png",
-    repositoryUrl: "https://github.com/Zpphs-gollavilli/siddu-s-3D-world",
-    demoUrl: "https://siddu-s-3-d-world.vercel.app",
-    description: "3D interactive portfolio showcasing my work",
+    slug: "School-project",
+    title: "ZPPHS Gollavilli",
+    image: "/my_project14.png",
+    repositoryUrl: "https://github.com/Zpphs-gollavilli/zpphs-gollavilli.github.io",
+    demoUrl: "https://zpphs-gollavilli.github.io/",
+    description: "A school website",
   },
   {
     slug: "XOXO-game",
@@ -181,13 +181,14 @@ const PROJECTS: Project[] = [
     demoUrl: "https://siddu-s-rubik-s-cube.netlify.app/",
     description: "Rubik's cube for you 😎.",
   },
+  
   {
-    slug: "School-project",
-    title: "ZPPHS Gollavilli",
-    image: "/my_project14.png",
-    repositoryUrl: "https://github.com/Zpphs-gollavilli/zpphs-gollavilli.github.io",
-    demoUrl: "https://zpphs-gollavilli.github.io/",
-    description: "A school website",
+    slug: "siddu-s-world",
+    title: "Siddharth-portfolio",
+    image: "/my_project.png",
+    repositoryUrl: "https://github.com/Zpphs-gollavilli/siddu-s-3D-world",
+    demoUrl: "https://siddu-s-3-d-world.vercel.app",
+    description: "3D interactive portfolio showcasing my work",
   },
   {
     slug: "Skull hotel",
@@ -208,7 +209,7 @@ const tabs = [
     image: TAB_ICONS.project,
     data: PROJECTS.filter(
       (p) =>
-        ["siddu-s-world", "Schedulify", "My Rupee Book", "Evrybloom-Dairy", "time-table-pro-app", "School-project"].includes(p.slug)
+        ["School-project", "Schedulify", "My Rupee Book", "Evrybloom-Dairy", "time-table-pro-app", "siddu-s-world"].includes(p.slug)
     ),
   },
   {
