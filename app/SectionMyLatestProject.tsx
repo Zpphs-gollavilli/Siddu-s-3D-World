@@ -181,6 +181,22 @@ const PROJECTS: Project[] = [
     demoUrl: "https://siddu-s-rubik-s-cube.netlify.app/",
     description: "Rubik's cube for you 😎.",
   },
+  {
+    slug: "School-project",
+    title: "ZPPHS Gollavilli",
+    image: "/my_project14.png",
+    repositoryUrl: "https://github.com/Zpphs-gollavilli/zpphs-gollavilli.github.io",
+    demoUrl: "https://zpphs-gollavilli.github.io/",
+    description: "A school website",
+  },
+  {
+    slug: "Skull hotel",
+    title: "the-raven-roost-hotel",
+    image: "/my_project15.png",
+    repositoryUrl: "https://github.com/Zpphs-gollavilli/The-Raven-s-Roost-Hotel",
+    demoUrl: "https://the-raven-s-roost-hotel.netlify.app/",
+    description: "A horror game 👻",
+  },
 ];
 
 /* ---------------- Tabs ---------------- */
@@ -192,7 +208,7 @@ const tabs = [
     image: TAB_ICONS.project,
     data: PROJECTS.filter(
       (p) =>
-        ["siddu-s-world", "Schedulify", "My Rupee Book", "Evrybloom-Dairy", "time-table-pro-app"].includes(p.slug)
+        ["siddu-s-world", "Schedulify", "My Rupee Book", "Evrybloom-Dairy", "time-table-pro-app", "School-project"].includes(p.slug)
     ),
   },
   {
@@ -207,7 +223,7 @@ const tabs = [
     name: "More",
     image: TAB_ICONS.more,
     data: PROJECTS.filter(
-      (p) => ["siddu-s-world", "Eclipse-Wanderer-Cosmic-Legacy", "quantum-spin", "neon-nexus-xoxo"].includes(p.slug)
+      (p) => ["siddu-s-world", "Eclipse-Wanderer-Cosmic-Legacy", "quantum-spin", "neon-nexus-xoxo", "Skull hotel"].includes(p.slug)
     ),
   },
 ];
