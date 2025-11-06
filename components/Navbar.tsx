@@ -96,7 +96,7 @@ export default function Navbar(): JSX.Element {
               {showResumeOptions && (
                 <div className="absolute right-0 mt-2 bg-white border rounded-lg shadow-lg z-50">
                   <a
-                    href="/index1.html"
+                    href="/resume.html"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block px-4 py-2 hover:bg-gray-100"
@@ -104,7 +104,7 @@ export default function Navbar(): JSX.Element {
                     Open in New Tab
                   </a>
                   <a
-                    href="/index1.html"
+                    href="/resume.html"
                     download="G_Siddharth_Resume.html"
                     className="block px-4 py-2 hover:bg-gray-100"
                   >
@@ -181,7 +181,7 @@ export default function Navbar(): JSX.Element {
             {/* Resume Options in Mobile */}
             <li className="flex flex-col mt-4 w-full">
               <a
-                href="/index1.html"
+                href="/resume.html"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex justify-between items-center py-3 px-4 mb-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
@@ -190,7 +190,7 @@ export default function Navbar(): JSX.Element {
                 <BsFileEarmarkPerson />
               </a>
               <a
-                href="/index1.html"
+                href="/resume.html"
                 download="G_Siddharth_Resume.html"
                 className="flex justify-between items-center py-3 px-4 rounded-lg bg-gray-200 text-gray-800"
               >

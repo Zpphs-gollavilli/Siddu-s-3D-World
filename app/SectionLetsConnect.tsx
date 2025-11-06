@@ -135,9 +135,17 @@ export default function SectionLetsConnect() {
             alt="Gmail"
             width={120}
             height={120}
-            onClick={() =>
-              (window.location.href = "mailto:guttulasiddharth1109@email.com")
-            }
+            onClick={() => {
+              const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+              if (isMobile) {
+                window.location.href = "mailto:guttulasiddharth1109@email.com";
+              } else {
+                window.open(
+                  "https://mail.google.com/mail/?view=cm&fs=1&to=guttulasiddharth1109@email.com",
+                  "_blank"
+                );
+              }
+            }}
           />
         </div>
       </div>
