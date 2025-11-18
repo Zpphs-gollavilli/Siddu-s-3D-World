@@ -68,7 +68,7 @@ export default function SectionQuote() {
                     transition={{ duration: 0.5 }}
                     className={styles.creatorQuotes}
                 >
-                   "💬 Let’s connect through live chat — ideas 💡, dreams 🌈, art 🎨, and joy 🎉 — together we make this space shine ✨❤️."
+                    "💬 Let’s connect through live chat — ideas 💡, dreams 🌈, art 🎨, and joy 🎉 — together we make this space shine ✨❤️."
                 </motion.p>
 
                 {animatedFloatingImages.map((item, index) => (
@@ -84,16 +84,22 @@ export default function SectionQuote() {
                 className={`${styles.creatorQuotesName} text-3xl md:text-4xl`}
                 style={suarte.style}
             >
-                {/* Lion + Signature */}
                 <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 3, repeat: Infinity }}
                     className="inline-block mr-2"
                 >
-                    🦁 {/* replace this with Lion SVG later */}
+                    🦁
                 </motion.span>
                 G Siddharth
             </motion.p>
-        </section >
+
+            {/* ✅ COPYRIGHT TEXT */}
+            <p className="text-center mt-6 text-sm opacity-70">
+                © {new Date().getFullYear()} Siddharth Guttula — All rights reserved.
+            </p>
+        </section>
+
+
     )
 }

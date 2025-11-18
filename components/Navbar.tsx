@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import React, { useEffect, useState, useRef } from "react";
-import BrandIcon from "./BrandIcon";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { RxCaretRight } from "react-icons/rx";
 import { BsFileEarmarkPerson } from "react-icons/bs";
+
+// Logo image
+import favicon from "@/app/favicon.ico";
 
 const navlinks = [
   { name: "Home", href: "/" },
@@ -62,9 +65,17 @@ export default function Navbar(): JSX.Element {
         className="sticky top-0 z-50 w-screen bg-white md:relative safe-layout"
       >
         <div className="flex flex-row items-center justify-between py-6 border-b-2 border-b-gray safe-x-padding">
+          
+          {/* ⭐ Replaced BrandIcon with favicon.ico */}
           <Link className="z-50" href="/" onClick={closeMenu} prefetch={false}>
-            <div className="w-[32px] h-[40px] lg:w-[42px] lg:h-[50px]">
-              <BrandIcon />
+            <div className="w-[45px] h-[45px] lg:w-[70px] lg:h-[50px] relative">
+              <Image 
+                src={favicon} 
+                alt="Siddharth Logo"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
           </Link>
 

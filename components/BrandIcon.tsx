@@ -76,8 +76,8 @@ export default function BrandIcon() {
 
         {/* SG letters */}
         <text
-          x="42"
-          y="125"
+          x="38"
+          y="120"
           fontFamily="Arial Black"
           fontSize="85"
           fill="white"
