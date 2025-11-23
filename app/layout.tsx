@@ -2,6 +2,7 @@ import { montserrat, poppins } from "@/constant/font";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Script from "next/script";
+import FloatingVideoLogo from "@/components/FloatingVideoLogo";   // ⬅️ added
 
 export const metadata = {
   title: "Siddu's 3D World",
@@ -22,6 +23,7 @@ export default function RootLayout({
     >
       <body>
         <Navbar />
+        <FloatingVideoLogo />   {/* ⬅️ added — nothing else changed */}
         {children}
 
         {/* ✅ Tawk.to Live Chat Script from env */}

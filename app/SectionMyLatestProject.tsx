@@ -110,6 +110,31 @@ const PROJECTS: Project[] = [
     description: "Interactive birthday celebration website with effects",
   },
   {
+    slug: "sg-tensiles",
+    title: "SG Tensiles",
+    image: "/my_project16.png",
+    repositoryUrl: "Private",
+    demoUrl: "https://sgtensiles.com/",
+    description: "Tensile structure & construction solutions website",
+  },
+  {
+    slug: "manakirana-employee-management",
+    title: "Manakirana Employee Management System",
+    image: "/my_project17.png",
+    repositoryUrl: "Private",
+    demoUrl: "https://manakirana-employee-management-syst-c7298193.base44.app",
+    description: "Smart employee attendance, payroll & monitoring system",
+  },
+  {
+    slug: "math-quest-cosmic-collector",
+    title: "Math Quest: Cosmic Collector",
+    image: "/my_project18.png",
+    repositoryUrl: "Private",
+    demoUrl: "https://math-quest-cosmic-collector-8bf397aa.base44.app",
+    description: "Fun mathematics game where players solve & collect cosmic rewards",
+  },
+
+  {
     slug: "shinobi-runner",
     title: "Shinobi Runner",
     image: "/my_project5.png",
@@ -181,7 +206,7 @@ const PROJECTS: Project[] = [
     demoUrl: "https://siddu-s-rubik-s-cube.netlify.app/",
     description: "Rubik's cube for you 😎.",
   },
-  
+
   {
     slug: "siddu-s-world",
     title: "Siddharth-portfolio",
@@ -208,16 +233,26 @@ const tabs = [
     name: "Project",
     image: TAB_ICONS.project,
     data: PROJECTS.filter(
-      (p) =>
-        ["School-project", "Schedulify", "My Rupee Book", "Evrybloom-Dairy", "time-table-pro-app", "siddu-s-world"].includes(p.slug)
+      (p) => [
+        "School-project",
+        "Schedulify",
+        "My Rupee Book",
+        "Evrybloom-Dairy",
+        "time-table-pro-app",
+        "siddu-s-world",
+        "sg-tensiles",
+        "manakirana-employee-management",
+        "math-quest-cosmic-collector"
+      ].includes(p.slug)
     ),
+
   },
   {
     name: "Design",
     image: TAB_ICONS.design,
     data: PROJECTS.filter(
       (p) =>
-        ["siddu-s-world", "XOXO-game", "smash-track", "siddu-s-celebration", "shinobi-runner","Siddu-rubik's-cube"].includes(p.slug)
+        ["siddu-s-world", "XOXO-game", "smash-track", "siddu-s-celebration", "shinobi-runner", "Siddu-rubik's-cube"].includes(p.slug)
     ),
   },
   {
@@ -241,7 +276,7 @@ export default function SectionMyLatestProject() {
   }, []);
 
 
-  
+
 
   return (
     <section ref={ref} className={`safe-x-padding ${styles.sectionDistance}`}>
@@ -273,9 +308,8 @@ export default function SectionMyLatestProject() {
             {tabs.map((tab, index) => (
               <motion.button
                 key={index}
-                className={`relative flex h-[75px] w-[75px] items-center justify-center overflow-hidden rounded-2xl shadow-xl md:h-[150px] md:w-[150px] md:rounded-[25px] ${
-                  activeTab === index ? "gradient-bg" : "bg-white"
-                }`}
+                className={`relative flex h-[75px] w-[75px] items-center justify-center overflow-hidden rounded-2xl shadow-xl md:h-[150px] md:w-[150px] md:rounded-[25px] ${activeTab === index ? "gradient-bg" : "bg-white"
+                  }`}
                 initial={{ opacity: 0, y: 50 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
@@ -289,9 +323,8 @@ export default function SectionMyLatestProject() {
                 <Image src={tab.image} alt={tab.name} width={100} height={100} />
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-gray/10 opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:opacity-100 md:rounded-[25px] md:text-2xl">
                   <p
-                    className={`${
-                      activeTab === index ? "text-white" : "text-accent"
-                    } font-bold transition-colors`}
+                    className={`${activeTab === index ? "text-white" : "text-accent"
+                      } font-bold transition-colors`}
                   >
                     {tab.name}
                   </p>

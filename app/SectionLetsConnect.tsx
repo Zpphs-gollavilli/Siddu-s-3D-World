@@ -46,7 +46,6 @@ function IndiaMapCanvas() {
             <IndiaMapModel />
           </Suspense>
 
-          {/* Static view only */}
           <OrbitControls enableZoom={false} enablePan={false} enableRotate={false} />
         </Canvas>
       </div>
@@ -87,11 +86,9 @@ export default function SectionLetsConnect() {
 
       {/* Content */}
       <div className="h-full mt-6 flex flex-col items-center justify-center gap-6">
-        {/* Avatar with glowing background */}
+        {/* Avatar & glowing background */}
         <div className="relative flex items-center justify-center">
-          {/* Glowing animated gradient background */}
           <div className="absolute w-[260px] sm:w-[340px] lg:w-[560px] h-[260px] sm:h-[340px] lg:h-[560px] rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 blur-3xl opacity-80 animate-pulse" />
-          {/* Avatar */}
           <AnimatedImage
             initial={{ y: 50, opacity: 0 }}
             animate={inView ? { y: 0, opacity: 1 } : {}}
@@ -105,48 +102,56 @@ export default function SectionLetsConnect() {
           />
         </div>
 
-        {/* India Map (static, centered) */}
+        {/* India Map */}
         <IndiaMapCanvas />
 
-        {/* Social icons (only GitHub & Gmail) */}
+        {/* Social icons with BLUE BG HOVER */}
         <div className="flex flex-row items-center justify-center gap-20 mt-6">
+
           {/* GitHub */}
-          <AnimatedImage
-            initial={{ y: -50, opacity: 0 }}
-            animate={inView ? { y: 0, opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            whileHover={{ scale: 1.1 }}
-            className="hover:cursor-pointer w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
-            src={assets.home.letsConnect.github}
-            alt="GitHub"
-            width={120}
-            height={120}
-            onClick={() => window.open("https://github.com/zpphs-gollavilli", "_blank")}
-          />
+          <div className="group relative flex items-center justify-center">
+            <span className="absolute w-[120px] h-[120px] rounded-full bg-blue-500 opacity-0 scale-0 transition-all duration-300 group-hover:opacity-40 group-hover:scale-100"></span>
+            <AnimatedImage
+              initial={{ y: -50, opacity: 0 }}
+              animate={inView ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              whileHover={{ scale: 1.1 }}
+              className="relative hover:cursor-pointer w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
+              src={assets.home.letsConnect.github}
+              alt="GitHub"
+              width={120}
+              height={120}
+              onClick={() => window.open("https://github.com/zpphs-gollavilli", "_blank")}
+            />
+          </div>
 
           {/* Gmail */}
-          <AnimatedImage
-            initial={{ y: 50, opacity: 0 }}
-            animate={inView ? { y: 0, opacity: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            whileHover={{ scale: 1.1 }}
-            className="hover:cursor-pointer w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
-            src={assets.home.letsConnect.gmail}
-            alt="Gmail"
-            width={120}
-            height={120}
-            onClick={() => {
-              const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-              if (isMobile) {
-                window.location.href = "mailto:guttulasiddharth1109@email.com";
-              } else {
-                window.open(
-                  "https://mail.google.com/mail/?view=cm&fs=1&to=guttulasiddharth1109@email.com",
-                  "_blank"
-                );
-              }
-            }}
-          />
+          <div className="group relative flex items-center justify-center">
+            <span className="absolute w-[120px] h-[120px] rounded-full bg-blue-500 opacity-0 scale-0 transition-all duration-300 group-hover:opacity-40 group-hover:scale-100"></span>
+            <AnimatedImage
+              initial={{ y: 50, opacity: 0 }}
+              animate={inView ? { y: 0, opacity: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              whileHover={{ scale: 1.1 }}
+              className="relative hover:cursor-pointer w-[90px] h-[90px] md:w-[120px] md:h-[120px]"
+              src={assets.home.letsConnect.gmail}
+              alt="Gmail"
+              width={120}
+              height={120}
+              onClick={() => {
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                if (isMobile) {
+                  window.location.href = "mailto:guttulasiddharth1109@email.com";
+                } else {
+                  window.open(
+                    "https://mail.google.com/mail/?view=cm&fs=1&to=guttulasiddharth1109@email.com",
+                    "_blank"
+                  );
+                }
+              }}
+            />
+          </div>
+
         </div>
       </div>
     </section>
