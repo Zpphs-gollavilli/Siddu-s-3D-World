@@ -121,7 +121,7 @@ export default function AboutMe() {
           className="lg:col-span-2 space-y-6 text-[1.02rem] md:text-lg leading-relaxed text-gray-900 font-medium"
         >
           <motion.p variants={fadeUp}>
-            Hello! I’m <strong className="text-sky-600">G Siddharth</strong>, a passionate and energetic 7th-grade student at{" "}
+            Hello! I’m <strong className="text-sky-600">G Siddharth a 12 years old kid </strong>, a passionate and energetic 7th-grade student at{" "}
             <em>Zilla Parishad High School, Gollavilli</em>. I believe in growing every day — not just in the classroom, but in
             everything I love: <strong>Badminton</strong>, <strong>Chess</strong>, <strong>Music</strong>, and{" "}
             <strong>Technology</strong>. I’m curious, consistent, and excited to build meaningful things.
