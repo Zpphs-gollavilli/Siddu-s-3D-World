@@ -12,7 +12,6 @@ import styles from "./home.module.css";
 
 /* ---------------- Tech Stack (Flat Array) ---------------- */
 const techCategories = [
-  /* ---------- FRONTEND ---------- */
   { name: "HTML5", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg", url: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
   { name: "CSS3", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg", url: "https://developer.mozilla.org/en-US/docs/Web/CSS" },
   { name: "JavaScript", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg", url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript" },
@@ -25,55 +24,129 @@ const techCategories = [
   { name: "Three.js", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/threejs/threejs-original.svg", url: "https://threejs.org/" },
   { name: "Figma", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg", url: "https://figma.com/" },
 
-  /* ---------- BACKEND ---------- */
   { name: "Node.js", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg", url: "https://nodejs.org/" },
   { name: "Express.js", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg", url: "https://expressjs.com/" },
   { name: "Python", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg", url: "https://python.org/" },
-  
-  /* ---------- DATABASE ---------- */
+
   { name: "MySQL", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg", url: "https://www.mysql.com/" },
   { name: "SQL", img: "https://www.svgrepo.com/show/331760/sql-database-generic.svg", url: "https://www.w3schools.com/sql/" },
   { name: "MongoDB", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg", url: "https://mongodb.com/" },
   { name: "Firebase", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/firebase/firebase-plain.svg", url: "https://firebase.google.com/" },
 
-  /* ---------- DEVOPS / CLOUD ---------- */
   { name: "Git", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg", url: "https://git-scm.com/" },
   { name: "GitHub", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg", url: "https://github.com/" },
   { name: "Docker", img: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg", url: "https://www.docker.com/" },
-
 ];
 
-/* ---------------- 3D Doraemon ---------------- */
+/* ---------------- 3D Doraemon (Auto-center + Fit) ---------------- */
 function Doraemon() {
+  // load the glb
   const { scene } = useGLTF("/doremon.glb");
-  const ref = useRef<THREE.Object3D | null>(null);
-  useFrame(() => { if (ref.current) ref.current.rotation.y += 0.01; });
-  return <primitive ref={ref} object={scene} scale={0.9} position={[0, -0.4, 0]} />;
+  const group = useRef<THREE.Group | null>(null);
+
+  // once the scene is available, compute bounding box center and size,
+  // shift the group so model center -> (0,0,0) and scale to fit nicely.
+  React.useEffect(() => {
+    if (!scene || !group.current) return;
+
+    // clone scene to avoid mutating original cached scene (safer)
+    const local = scene.clone(true) as THREE.Object3D;
+
+    // compute bounding box for the whole model
+    const box = new THREE.Box3().setFromObject(local);
+    const center = new THREE.Vector3();
+    const size = new THREE.Vector3();
+    box.getCenter(center);
+    box.getSize(size);
+
+    // move the model so its center is at origin
+    // we'll apply this to the group container instead of to the primitive directly.
+    // keep a small vertical offset so the model sits a bit above center if needed.
+    const verticalOffset = size.y * 0.05; // small lift so it doesn't look sunk
+    if (group.current) {
+      group.current.position.set(-center.x, -center.y + verticalOffset, -center.z);
+    }
+
+    // optional: scale to fit a target box size (so very big or very small models fit)
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const targetSize = 1.6; // tweak this: larger -> model appears larger in view
+    if (maxDim > 0) {
+      const scaleFactor = targetSize / maxDim;
+      if (group.current) group.current.scale.setScalar(scaleFactor);
+    }
+
+    // cleanup not required because we didn't add listeners
+  }, [scene]);
+
+  // subtle auto rotation in render loop (keeps consistent with OrbitControls)
+  useFrame(() => {
+    if (group.current) {
+      // a tiny continuous spin so auto-rotate + manual drag feel smooth
+      group.current.rotation.y += 0.004;
+    }
+  });
+
+  // Render a group wrapper and the model primitive inside it.
+  return (
+    <group ref={group} dispose={null}>
+      <primitive object={scene} />
+    </group>
+  );
 }
 useGLTF.preload("/doremon.glb");
 
 function DoraemonCanvas() {
   const [auto, setAuto] = useState(true);
   const ctrls = useRef<any>(null);
+
+  // handle pointer logic
   let downAt = 0;
-  const onPointerDown = () => { downAt = Date.now(); setAuto(false); };
-  const onPointerUp = () => { if (Date.now() - downAt < 180) setAuto((v) => !v); };
+  const onPointerDown = () => {
+    downAt = Date.now();
+    setAuto(false);
+  };
+  const onPointerUp = () => {
+    if (Date.now() - downAt < 180) setAuto((v) => !v);
+  };
+
+  // The wrapper div centers canvas visually (flex) and has rounded border
   return (
-    <div className="w-[200px] h-[220px] md:w-[240px] md:h-[260px] rounded-xl bg-white shadow-lg">
+    <div
+      className="
+        w-[200px] h-[220px] md:w-[240px] md:h-[260px]
+        rounded-2xl border-[4px] border-blue-400
+        shadow-xl bg-white overflow-hidden flex items-center justify-center
+      "
+    >
       <Canvas
         style={{ width: "100%", height: "100%" }}
-        gl={{ antialias: true }}
-        camera={{ fov: 35, position: [0, 1.2, 3.8] }}
+        gl={{ antialias: true, alpha: false }}
+        camera={{ fov: 40, position: [0, 0.9, 3.2] }} // camera tuned for fitted model
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
       >
         <color attach="background" args={["#ffffff"]} />
-        <ambientLight intensity={0.95} />
-        <directionalLight position={[5, 6, 6]} intensity={0.9} />
+        <ambientLight intensity={0.9} />
+        <directionalLight position={[6, 8, 6]} intensity={1} />
+        <directionalLight position={[-6, -4, -6]} intensity={0.4} />
+
         <Suspense fallback={null}>
           <Doraemon />
         </Suspense>
-        <OrbitControls ref={ctrls} enableZoom={false} enablePan={false} autoRotate={auto} autoRotateSpeed={2} enableDamping dampingFactor={0.08} />
+
+        <OrbitControls
+          ref={ctrls}
+          enableZoom={false}
+          enablePan={false}
+          autoRotate={auto}
+          autoRotateSpeed={2}
+          enableDamping
+          dampingFactor={0.08}
+          // lock vertical rotation so user can only rotate horizontally
+          minPolarAngle={Math.PI / 2}
+          maxPolarAngle={Math.PI / 2}
+          // optionally restrict azimuth if you want: minAzimuthAngle / maxAzimuthAngle
+        />
       </Canvas>
     </div>
   );
@@ -85,9 +158,11 @@ export default function SectionTechnologyStack() {
 
   return (
     <section ref={ref} className={`safe-x-padding ${styles.sectionDistance} flex flex-col items-center w-full`}>
-      {/* Header */}
       <div className="text-center mb-10 px-4">
-        <motion.h2 initial={{ y: 60, opacity: 0 }} animate={inView ? { y: 0, opacity: 1 } : {}} transition={{ duration: 0.4 }}
+        <motion.h2
+          initial={{ y: 60, opacity: 0 }}
+          animate={inView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.4 }}
           className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-3 bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500 bg-clip-text text-transparent"
         >
           ⚙️ Technology Stack ⚙️
@@ -97,10 +172,7 @@ export default function SectionTechnologyStack() {
         </p>
       </div>
 
-      {/* Grid + 3D Layout */}
       <div className="w-full flex flex-col lg:flex-row justify-center gap-10 lg:gap-20 items-center">
-        
-        {/* Tech Grid */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -141,7 +213,6 @@ export default function SectionTechnologyStack() {
         <div className="flex justify-center w-full lg:w-auto">
           <DoraemonCanvas />
         </div>
-
       </div>
     </section>
   );
