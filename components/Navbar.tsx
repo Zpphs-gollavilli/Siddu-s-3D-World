@@ -93,10 +93,10 @@ export default function Navbar(): JSX.Element {
                     Download HTML Resume
                   </a>
                   {/* PDF resume */}
-                  <a href="/Siddharth_Resume.pdf" target="_blank" className="block px-4 py-2 hover:bg-gray-100">
+                  <a href="/Siddharth-s-Resume.pdf" target="_blank" className="block px-4 py-2 hover:bg-gray-100">
                     Open PDF Resume
                   </a>
-                  <a href="/Siddharth_Resume.pdf" download="Siddharth_Resume.pdf" className="block px-4 py-2 hover:bg-gray-100">
+                  <a href="/Siddharth-s-Resume.pdf" download="Siddharth_Resume.pdf" className="block px-4 py-2 hover:bg-gray-100">
                     Download PDF Resume
                   </a>
                 </div>
