@@ -72,7 +72,10 @@ function ShinchanWorldCanvas() {
 }
 
 /* ---------------- Animation helpers ---------------- */
-const container: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } } };
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+};
 const fadeUp: Variants = {
   hidden: { y: 18, opacity: 0 },
   show: { y: 0, opacity: 1, transition: { duration: 0.55, ease: easeOutCubic } },
@@ -82,12 +85,15 @@ const floatPulse: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: easeOutCubic } },
 };
 
+/* ---------------- Main Component ---------------- */
 export default function AboutMe() {
   const { ref, inView } = useInView({ threshold: 0.15, triggerOnce: true });
+  const [skip, setSkip] = useState(false);
 
   return (
-    <section className="safe-layout px-4 py-14 md:py-20 max-w-6xl mx-auto">
-      {/* Heading */}
+    <section className="safe-layout px-4 py-14 md:py-20 max-w-6xl mx-auto relative">
+
+      {/* ---------------- Heading ---------------- */}
       <div className="text-center">
         <motion.h2
           initial={{ scale: 0.96, opacity: 0 }}
@@ -111,8 +117,9 @@ export default function AboutMe() {
         </motion.p>
       </div>
 
-      {/* Layout */}
+      {/* ---------------- Layout ---------------- */}
       <div ref={ref} className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+
         {/* Left text content */}
         <motion.div
           variants={container}
@@ -120,11 +127,11 @@ export default function AboutMe() {
           animate={inView ? "show" : "hidden"}
           className="lg:col-span-2 space-y-6 text-[1.02rem] md:text-lg leading-relaxed text-gray-900 font-medium"
         >
+          {/* About me paragraphs */}
           <motion.p variants={fadeUp}>
             Hello! I’m <strong className="text-sky-600">G Siddharth a 12 years old kid </strong>, a passionate and energetic 7th-grade student at{" "}
             <em>Zilla Parishad High School, Gollavilli</em>. I believe in growing every day — not just in the classroom, but in
-            everything I love: <strong>Badminton</strong>, <strong>Chess</strong>, <strong>Music</strong>, and{" "}
-            <strong>Technology</strong>. I’m curious, consistent, and excited to build meaningful things.
+            everything I love: <strong>Badminton</strong>, <strong>Chess</strong>, <strong>Music</strong>, and <strong>Technology</strong>. I’m curious, consistent, and excited to build meaningful things.
           </motion.p>
 
           <motion.p variants={fadeUp}>
@@ -187,17 +194,15 @@ export default function AboutMe() {
           />
         </motion.div>
 
-        {/* Right Column: Shinchan + GIF + PGN */}
+        {/* Right Column: Shinchan + GIF + PGN + Video Below */}
         <motion.div
           initial={{ x: 24, opacity: 0 }}
           animate={inView ? { x: 0, opacity: 1 } : {}}
           transition={{ duration: 0.5, ease: easeOutCubic }}
           className="flex flex-col items-center space-y-5 lg:items-end"
         >
-          {/* 3D Shinchan */}
           <ShinchanWorldCanvas />
 
-          {/* Chess GIF */}
           <motion.img
             src="/aches.gif"
             alt="Chess animation"
@@ -212,7 +217,6 @@ export default function AboutMe() {
             className="w-[240px] md:w-[280px] lg:w-[320px] rounded-xl shadow-xl border-4 border-white/70 bg-white/20 backdrop-blur-sm"
           />
 
-          {/* PGN Moves */}
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -230,6 +234,22 @@ export default function AboutMe() {
               7. Qf7# 1-0
             </p>
           </motion.div>
+
+          {/* ---------------- New Video Below Chess ---------------- */}
+          {!skip && (
+            <motion.video
+              src="/about.mp4"
+              autoPlay
+              loop
+              muted={false} // Sound enabled
+              controls // Show controls for play/pause/volume
+              playsInline
+              className="w-[300px] h-[200px] md:w-[380px] md:h-[240px] rounded-md shadow-lg mt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: easeOutCubic }}
+            />
+          )}
         </motion.div>
       </div>
     </section>

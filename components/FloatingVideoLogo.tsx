@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 
 export default function FloatingVideoLogo() {
@@ -12,10 +13,9 @@ export default function FloatingVideoLogo() {
   const [hoverYellow, setHoverYellow] = useState(false);
   const [hoverRed, setHoverRed] = useState(false);
   const [showSkip, setShowSkip] = useState(false);
+  const [muted, setMuted] = useState(false);
 
-  /* -----------------------------------------
-     SHOW SKIP BUTTON
-  ----------------------------------------- */
+  // Show skip button after 4 seconds
   useEffect(() => {
     if (intro) {
       const timer = setTimeout(() => setShowSkip(true), 4000);
@@ -23,16 +23,12 @@ export default function FloatingVideoLogo() {
     }
   }, [intro]);
 
-  /* -----------------------------------------
-     DISABLE SCROLL IN INTRO
-  ----------------------------------------- */
+  // Disable scroll during intro
   useEffect(() => {
     document.body.style.overflow = intro ? "hidden" : "auto";
   }, [intro]);
 
-  /* -----------------------------------------
-     DRAG ONLY WHEN FLOATING + LIMIT EDGES
-  ----------------------------------------- */
+  // Dragging logic
   useEffect(() => {
     const el = containerRef.current;
     if (!el || intro) return;
@@ -51,14 +47,12 @@ export default function FloatingVideoLogo() {
 
     const move = (e: any) => {
       if (!dragging) return;
-
       const viewportW = window.innerWidth;
       const viewportH = window.innerHeight;
 
       const x = (e.touches ? e.touches[0].clientX : e.clientX) - offsetX;
       const y = (e.touches ? e.touches[0].clientY : e.clientY) - offsetY;
 
-      // limit edges (never cut)
       const maxX = viewportW - el.offsetWidth - 10;
       const maxY = viewportH - el.offsetHeight - 10;
 
@@ -85,36 +79,33 @@ export default function FloatingVideoLogo() {
     };
   }, [intro]);
 
+  // Handle video end
+  const handleEnded = () => {
+    setIntro(false);
+    setPlayedOnce(true);
+  };
+
+  // End intro manually
   const endIntro = () => {
     setIntro(false);
     setPlayedOnce(true);
     videoRef.current?.pause();
   };
 
-  const handleEnded = () => {
-    if (intro) endIntro();
-    else setPlayedOnce(true);
-  };
-
   if (!show) return null;
 
-  /* -----------------------------------------
-     RESPONSIVE SIZE CALCULATION
-  ----------------------------------------- */
-  const floatingWidth = minimized ? 80 : 260; // desktop
-  const floatingHeight = minimized ? 60 : 150;
-
-  const mobileWidth = minimized ? 65 : 180; // mobile
-  const mobileHeight = minimized ? 45 : 110;
-
   const isMobile = typeof window !== "undefined" && window.innerWidth < 600;
+
+  const floatingWidth = minimized ? 80 : 260;
+  const floatingHeight = minimized ? 60 : 150;
+  const mobileWidth = minimized ? 65 : 180;
+  const mobileHeight = minimized ? 45 : 110;
 
   return (
     <div
       ref={containerRef}
-      className={`fixed transition-all duration-300 z-[5000]
-        ${intro ? "top-0 left-0 w-screen h-screen" : "cursor-grab"}
-      `}
+      className={`fixed transition-all duration-300 z-[5000] ${intro ? "top-0 left-0 w-screen h-screen" : "cursor-grab"
+        }`}
       style={{
         width: intro ? "100vw" : isMobile ? `${mobileWidth}px` : `${floatingWidth}px`,
         height: intro ? "100vh" : isMobile ? `${mobileHeight}px` : `${floatingHeight}px`,
@@ -123,8 +114,22 @@ export default function FloatingVideoLogo() {
         borderRadius: intro ? "0px" : "18px",
       }}
     >
+      {/* Video */}
+      {!minimized && (
+        <video
+          ref={videoRef}
+          src="/logo.mp4"
+          autoPlay
+          muted={muted}
+          playsInline
+          preload="auto"
+          onEnded={handleEnded}
+          className={`w-full h-full object-cover ${intro ? "pointer-events-none" : "rounded-xl pointer-events-none"
+            }`}
+        />
+      )}
 
-      {/* SKIP BUTTON */}
+      {/* Skip button */}
       {intro && showSkip && (
         <button
           onClick={endIntro}
@@ -134,9 +139,28 @@ export default function FloatingVideoLogo() {
         </button>
       )}
 
-      {/* FLOATING BUTTONS */}
-      {!intro && (
-        <div className="absolute top-2 left-2 flex gap-2 z-[6000] pointer-events-auto">
+      {/* Play with sound */}
+      {intro && (
+        <button
+          onClick={() => {
+            if (videoRef.current) {
+              videoRef.current.muted = false;
+              videoRef.current.play();
+            }
+            setMuted(false);
+            // DO NOT EXIT INTRO
+          }}
+          className="absolute bottom-20 right-8 bg-white/80 text-black font-semibold text-lg px-5 py-2 rounded-lg backdrop-blur-md"
+        >
+          Play with Sound 🔊
+        </button>
+      )}
+
+
+      {/* Control buttons after intro */}
+      {!intro && !minimized && (
+        <div className="absolute inset-0 flex items-center justify-center gap-3 z-[6000] pointer-events-auto">
+          {/* Minimize */}
           <button
             onMouseEnter={() => setHoverYellow(true)}
             onMouseLeave={() => setHoverYellow(false)}
@@ -144,13 +168,12 @@ export default function FloatingVideoLogo() {
               e.stopPropagation();
               setMinimized((p) => !p);
             }}
-            className="relative w-4 h-4 rounded-full bg-yellow-400 border border-black/40 hover:bg-yellow-300"
+            className="relative w-6 h-6 rounded-full bg-yellow-400 border border-black/40 hover:bg-yellow-300 flex items-center justify-center"
           >
-            {hoverYellow && (
-              <span className="absolute text-black text-[12px] font-bold left-1 top-[-3px]">–</span>
-            )}
+            {hoverYellow && <span className="text-black text-lg font-bold">–</span>}
           </button>
 
+          {/* Close */}
           <button
             onMouseEnter={() => setHoverRed(true)}
             onMouseLeave={() => setHoverRed(false)}
@@ -158,43 +181,39 @@ export default function FloatingVideoLogo() {
               e.stopPropagation();
               setShow(false);
             }}
-            className="relative w-4 h-4 rounded-full bg-red-500 border border-black/40 hover:bg-red-400"
+            className="relative w-6 h-6 rounded-full bg-red-500 border border-black/40 hover:bg-red-400 flex items-center justify-center"
           >
-            {hoverRed && (
-              <span className="absolute text-black text-[11px] font-bold left-[5px] top-[-4px]">×</span>
-            )}
+            {hoverRed && <span className="text-black text-lg font-bold">×</span>}
           </button>
+
+          {/* Mute / Unmute */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (videoRef.current) {
+                videoRef.current.muted = !videoRef.current.muted;
+                setMuted(videoRef.current.muted);
+              }
+            }}
+            className="relative w-6 h-6 rounded-full bg-blue-400 border border-black/40 hover:bg-blue-300 flex items-center justify-center"
+          >
+            <span className="text-black text-lg font-bold">{muted ? "🔇" : "🔊"}</span>
+          </button>
+
+          {/* Replay */}
+          {playedOnce && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setPlayedOnce(false);
+                videoRef.current?.play();
+              }}
+              className="relative w-6 h-6 rounded-full bg-black/60 text-white hover:bg-black/75 flex items-center justify-center"
+            >
+              🔁
+            </button>
+          )}
         </div>
-      )}
-
-      {/* VIDEO */}
-      {!minimized && (
-        <video
-          ref={videoRef}
-          src="/logo.mp4"
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-          onEnded={handleEnded}
-          className={`w-full h-full object-cover 
-            ${intro ? "pointer-events-none" : "rounded-xl pointer-events-none"}
-          `}
-        />
-      )}
-
-      {/* REPLAY BUTTON */}
-      {playedOnce && !intro && !minimized && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setPlayedOnce(false);
-            videoRef.current?.play();
-          }}
-          className="absolute bottom-1 right-1 bg-black/60 text-white text-xs px-3 py-[2px] rounded-md hover:bg-black/75 backdrop-blur-md"
-        >
-          Replay 🔁
-        </button>
       )}
     </div>
   );
